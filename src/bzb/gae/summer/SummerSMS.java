@@ -6,6 +6,7 @@ package bzb.gae.summer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
 
 import bzb.gae.PMF;
@@ -73,11 +74,11 @@ public class SummerSMS {
 		String arrivalTime = parseArrivalTime(smsChunks[2].trim());
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
-			User user = pm.getObjectById(User.class, username);
-			if (user != null) {
+			try {
+				User user = pm.getObjectById(User.class, username);
 				user.setArrivalTime(arrivalTime);
 				user.setPhoneNumber(getOriginator());
-			} else {
+			} catch (JDOObjectNotFoundException je) {
 				setArrivalTime(arrivalTime);
 				setUsername(username);
 			}
