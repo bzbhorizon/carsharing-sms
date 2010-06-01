@@ -3,18 +3,24 @@
  */
 package bzb.gae.summer;
 
+import java.util.List;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
 
 import bzb.gae.PMF;
 import bzb.gae.exceptions.BadArrivalTimeException;
 import bzb.gae.exceptions.TooFewArgumentsException;
 import bzb.gae.exceptions.TooManyArgumentsException;
 import bzb.gae.exceptions.UserAlreadyExistsException;
+import bzb.gae.summer.jdo.Group;
 import bzb.gae.summer.jdo.User;
+
+import com.google.appengine.api.datastore.Key;
 
 /**
  * @author bzb
@@ -22,12 +28,13 @@ import bzb.gae.summer.jdo.User;
  */
 public class SummerSMS {
 
-	//private static final Logger log = Logger.getLogger(SummerSMS.class.getName());
+	private static final Logger log = Logger.getLogger(SummerSMS.class.getName());
 	private final static int EXPECTED_PARAMETERS = 3;
 
 	private String originator;
 	private String username;
 	private String arrivalTime;
+	private Key groupKey;
 
 	public SummerSMS(String originator, String[] smsChunks)
 			throws UserAlreadyExistsException, BadArrivalTimeException,
@@ -39,10 +46,11 @@ public class SummerSMS {
 		} else {
 			setOriginator(originator);
 			checkDetails(smsChunks);
+			checkGroup();
 			if (getUsername() != null) {
 				PersistenceManager pm = PMF.get().getPersistenceManager();
 				User user = new User(getUsername(), getOriginator(),
-						getArrivalTime());
+						getArrivalTime(), getGroupKey());
 				try {
 					pm.makePersistent(user);
 				} finally {
@@ -77,7 +85,9 @@ public class SummerSMS {
 		try {
 			try {
 				User user = pm.getObjectById(User.class, username);
+				setUsername(username);
 				user.setArrivalTime(arrivalTime);
+				setArrivalTime(arrivalTime);
 				user.setPhoneNumber(getOriginator());
 			} catch (JDOObjectNotFoundException je) {
 				setArrivalTime(arrivalTime);
@@ -112,6 +122,57 @@ public class SummerSMS {
 
 	public String getArrivalTime() {
 		return arrivalTime;
+	}
+
+	public void setGroupKey(Key groupKey) {
+		this.groupKey = groupKey;
+	}
+
+	public Key getGroupKey() {
+		return groupKey;
+	}
+	
+	public void checkGroup () {
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		try {
+			try {
+				User user = pm.getObjectById(User.class, getUsername());
+				log.warning("User already exists");
+	
+				if (user.getGroupKey() == null || !pm.getObjectById(Group.class, user.getGroupKey()).getArrivalTime().equals(getArrivalTime())) {
+					Query q = pm.newQuery("select from " + Group.class.getName() + " where arrivalTime == " + getArrivalTime());
+					List<Group> groups = (List<Group>) q.execute();
+					if (groups.size() > 0) {
+				    	log.warning("Assigning user to different existing group");
+				    	user.setGroupKey(groups.get(0).getKey());
+				    	setGroupKey(groups.get(0).getKey());
+				    } else {
+				    	log.warning("Creating a new group for user");
+				    	Group newGroup = new Group(getArrivalTime());
+				    	pm.makePersistent(newGroup);
+				    	user.setGroupKey(newGroup.getKey());
+				    	setGroupKey(newGroup.getKey());
+				    }
+				} else {
+					log.warning("User's existing group is fine");
+				}
+			} catch (JDOObjectNotFoundException je) {
+				log.warning("User doesn't exist yet");
+				Query q = pm.newQuery("select key from " + Group.class.getName() + " where arrivalTime == " + getArrivalTime());
+			    List<Key> keys = (List<Key>) q.execute();
+			    if (keys.size() > 0) {
+			    	log.warning("Assigning user to different existing group");
+			    	setGroupKey(keys.get(0));
+			    } else {
+			    	log.warning("Creating a new group for user");
+			    	Group newGroup = new Group(getArrivalTime());
+			    	pm.makePersistent(newGroup);
+			    	setGroupKey(newGroup.getKey());
+			    }
+			}
+		} finally {
+			pm.close();
+		}
 	}
 
 }

@@ -7,6 +7,8 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.google.appengine.api.datastore.Key;
+
 /**
  * @author bzb
  *
@@ -24,10 +26,14 @@ public class User {
 	@Persistent
 	private String arrivalTime;
 	
-	public User (String username, String phoneNumber, String arrivalTime) {
+	@Persistent
+	private Key groupKey;
+	
+	public User (String username, String phoneNumber, String arrivalTime, Key groupKey) {
 		setUsername(username);
 		setPhoneNumber(phoneNumber);
 		setArrivalTime(arrivalTime);
+		setGroupKey(groupKey);
 	}
 
 	public void setUsername(String username) {
@@ -52,6 +58,14 @@ public class User {
 
 	public String getArrivalTime() {
 		return arrivalTime;
+	}
+
+	public void setGroupKey(Key groupKey) {
+		this.groupKey = groupKey;
+	}
+
+	public Key getGroupKey() {
+		return groupKey;
 	}
 	
 }
