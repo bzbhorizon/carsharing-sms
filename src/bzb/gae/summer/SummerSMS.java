@@ -10,10 +10,11 @@ import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
 
 import bzb.gae.PMF;
-import bzb.gae.summer.exceptions.BadArrivalTimeException;
-import bzb.gae.summer.exceptions.TooFewArgumentsException;
-import bzb.gae.summer.exceptions.TooManyArgumentsException;
-import bzb.gae.summer.exceptions.UserAlreadyExistsException;
+import bzb.gae.exceptions.BadArrivalTimeException;
+import bzb.gae.exceptions.TooFewArgumentsException;
+import bzb.gae.exceptions.TooManyArgumentsException;
+import bzb.gae.exceptions.UserAlreadyExistsException;
+import bzb.gae.summer.jdo.User;
 
 /**
  * @author bzb

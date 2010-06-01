@@ -1,7 +1,7 @@
 /**
  * 
  */
-package bzb.gae.summer;
+package bzb.gae.summer.jdo;
 
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;

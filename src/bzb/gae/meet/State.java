@@ -7,7 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import bzb.gae.Utility;
-import bzb.gae.meet.exceptions.NoStateException;
+import bzb.gae.exceptions.NoStateException;
 
 public class State {
 
@@ -35,7 +35,7 @@ public class State {
 
 	public State() throws NoStateException {
 		setJsonResponse(Utility
-				.sendGetRequest("http://carsharing-gae.appspot.com/carsharing/network/checkstate"));
+				.makeGetRequest("http://carsharing-gae.appspot.com/carsharing/network/checkstate"));
 		
 		if (getJsonResponse() != null) {
 			try {

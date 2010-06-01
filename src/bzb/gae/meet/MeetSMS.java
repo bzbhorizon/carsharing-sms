@@ -2,6 +2,9 @@ package bzb.gae.meet;
 
 import java.util.logging.Logger;
 
+import bzb.gae.exceptions.TooFewArgumentsException;
+import bzb.gae.exceptions.TooManyArgumentsException;
+
 /**
  * @author psxbdb
  *
@@ -22,19 +25,19 @@ public class MeetSMS {
 	
 	private static final Logger log = Logger.getLogger(MeetSMS.class.getName());
 	
-	public MeetSMS (String[] smsChunks, String originator) {
-		setName(smsChunks[1]);
-		setDestination(smsChunks[2]);
-
-		if (smsChunks.length < EXPECTED_PARAMETERS) {
+	public MeetSMS (String[] smsChunks, String originator) throws TooFewArgumentsException, TooManyArgumentsException {
+		if (smsChunks.length == EXPECTED_PARAMETERS - 1) {
 			log.warning("No third argument found: set to driver");
 		} else if (smsChunks.length == EXPECTED_PARAMETERS) {
 			setDriver(true);
 			log.warning("Third argument found in SMS (" + smsChunks[3] + "): set to driver");
-		} else {
-			log.warning("SMS split into " + smsChunks.length + " bits; expecting 3 or 4");
+		} else if (smsChunks.length < EXPECTED_PARAMETERS - 1) {
+			throw new TooFewArgumentsException();
+		} else if (smsChunks.length > EXPECTED_PARAMETERS) {
+			throw new TooManyArgumentsException();
 		}
-		
+		setName(smsChunks[1]);
+		setDestination(smsChunks[2]);
 		setSender(originator);
 		log.info("SMS split: " + getSummary());
 	}

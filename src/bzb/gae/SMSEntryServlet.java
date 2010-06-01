@@ -8,13 +8,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import bzb.gae.exceptions.BadArrivalTimeException;
+import bzb.gae.exceptions.TooFewArgumentsException;
+import bzb.gae.exceptions.TooManyArgumentsException;
+import bzb.gae.exceptions.UserAlreadyExistsException;
 import bzb.gae.meet.MeetSMS;
-import bzb.gae.meet.Get;
 import bzb.gae.summer.SummerSMS;
-import bzb.gae.summer.exceptions.BadArrivalTimeException;
-import bzb.gae.summer.exceptions.TooFewArgumentsException;
-import bzb.gae.summer.exceptions.TooManyArgumentsException;
-import bzb.gae.summer.exceptions.UserAlreadyExistsException;
 
 @SuppressWarnings("serial")
 public class SMSEntryServlet extends HttpServlet {
@@ -55,15 +54,25 @@ public class SMSEntryServlet extends HttpServlet {
 			log.warning("SMS from " + originator + " intended for " + app + " app; checking ...");
 			
 			if (app.equals(apps[0][NAME])) { // meet
-				MeetSMS sms = new MeetSMS(smsChunks, originator);
-
-				log.warning("Response: " + Get.registerGetRequest(sms.getNetwork(), sms.getName(), sms.getDestination(), sms.isDriver(), sms.getSender()));
+				try {
+					MeetSMS sms = new MeetSMS(smsChunks, originator);
+					log.warning("Response: " + bzb.gae.meet.Rest.registerGetRequest(sms.getNetwork(), sms.getName(), sms.getDestination(), sms.isDriver(), sms.getSender()));
+				} catch (TooManyArgumentsException tme) {
+					// send too many arguments message
+					html += getUsageInfo(0);
+					log.warning("tme");
+				} catch (TooFewArgumentsException tfe) {
+					// send too few arguments message
+					html += getUsageInfo(0);
+					log.warning("tfe");					
+				}
 			} else if (app.equals(apps[1][NAME])) { // summer
 				try {
 					SummerSMS ss = new SummerSMS(originator, smsChunks);
 					html += "<p>User " + ss.getUsername() + " registered</p>";
 				} catch (UserAlreadyExistsException ue) { // Tried to register with an existing username
 					// send updated user message
+					log.warning(Utility.sendSMS(originator, "User already exists"));
 					html += "<p>User already registered; user updated</p>";
 					log.warning("ue");
 				} catch (BadArrivalTimeException be) {

@@ -14,7 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import bzb.gae.Utility;
-import bzb.gae.meet.exceptions.NoStateException;
+import bzb.gae.exceptions.NoStateException;
 
 /**
  * @author psxbdb
@@ -105,7 +105,7 @@ public class MobileServlet extends HttpServlet {
 							request.getParameterMap().containsKey(PARAM_DRIVER)) {
 						try {
 							String strippedDest = request.getParameter(PARAM_DEST).trim().replaceAll(" ", "");
-							String getResponseStr = Get.registerGetRequest(MeetSMS.DEFAULT_NETWORK, request.getParameter(PARAM_NAME), strippedDest, request.getParameter(PARAM_DRIVER), "0");
+							String getResponseStr = Rest.registerGetRequest(MeetSMS.DEFAULT_NETWORK, request.getParameter(PARAM_NAME), strippedDest, request.getParameter(PARAM_DRIVER), "0");
 							if (getResponseStr != null) {
 								JSONObject getResponse = new JSONObject(getResponseStr);
 								if (getResponse.getBoolean("success") == false) {
@@ -126,8 +126,8 @@ public class MobileServlet extends HttpServlet {
 			} else if (request.getParameterMap().containsKey(PARAM_MATCHES)) {
 				String check = request.getParameter(PARAM_MATCHES);
 				if (check.equals("true")) {
-					log.warning(Utility.sendGetRequest("http://carsharing-gae.appspot.com/carsharing/network/create?mode=start"));
-					String getResponseStr = Utility.sendGetRequest("http://carsharing-gae.appspot.com/carsharing/network/generatematches");
+					log.warning(Utility.makeGetRequest("http://carsharing-gae.appspot.com/carsharing/network/create?mode=start"));
+					String getResponseStr = Utility.makeGetRequest("http://carsharing-gae.appspot.com/carsharing/network/generatematches");
 					log.warning(getResponseStr);
 					if (getResponseStr != null) {
 						JSONObject getResponse;

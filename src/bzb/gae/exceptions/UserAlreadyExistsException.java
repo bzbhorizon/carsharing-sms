@@ -1,7 +1,7 @@
 /**
  * 
  */
-package bzb.gae.summer.exceptions;
+package bzb.gae.exceptions;
 
 /**
  * @author bzb
