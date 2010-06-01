@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import bzb.gae.meet.MeetSMS;
+import bzb.gae.meet.Get;
 import bzb.gae.summer.SummerSMS;
 import bzb.gae.summer.exceptions.BadArrivalTimeException;
 import bzb.gae.summer.exceptions.TooFewArgumentsException;
@@ -53,7 +55,9 @@ public class SMSEntryServlet extends HttpServlet {
 			log.warning("SMS from " + originator + " intended for " + app + " app; checking ...");
 			
 			if (app.equals(apps[0][NAME])) { // meet
-				
+				MeetSMS sms = new MeetSMS(smsChunks, originator);
+
+				log.warning("Response: " + Get.registerGetRequest(sms.getNetwork(), sms.getName(), sms.getDestination(), sms.isDriver(), sms.getSender()));
 			} else if (app.equals(apps[1][NAME])) { // summer
 				try {
 					SummerSMS ss = new SummerSMS(originator, smsChunks);
