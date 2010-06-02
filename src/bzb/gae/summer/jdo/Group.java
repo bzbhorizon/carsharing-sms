@@ -112,10 +112,15 @@ public class Group {
 	
 	public void mailGroup () {
 		List<User> users = getUsers(null);
-		Iterator<User> i = users.iterator();
-		while (i.hasNext()) {
-			User user = i.next();
-			Utility.sendSMS(user.getPhoneNumber(), toString(user.getUsername()));
+		if (users.size() == 1) {
+			User user = users.get(0);
+			Utility.sendSMS(user.getPhoneNumber(), "Unfortunately there were no other travellers in your group");
+		} else if (users.size() > 1) {
+			Iterator<User> i = users.iterator();
+			while (i.hasNext()) {
+				User user = i.next();
+				Utility.sendSMS(user.getPhoneNumber(), toString(user.getUsername()));
+			}
 		}
 	}
 	
