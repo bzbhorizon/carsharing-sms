@@ -1,0 +1,35 @@
+body {
+	background-color: black;
+	color: white;
+}
+
+a:link,a:visited {
+	color: white;
+}
+
+h1 {
+	color: #00c0ff;
+}
+
+.bold {
+	color: #00FF66;
+	font-weight: bold;
+	border-bottom: 1px dotted #00FF66;
+}
+
+a.box {
+	color: #00c0ff;
+}
+
+p.box {
+	color: #00c0ff;
+	border: 1px dotted #00c0ff;
+	background-color: #006699;
+	text-align: center;
+	padding: 5px;
+}
+
+foot {
+	font-size: 6pt;
+	text-align: center;
+}
