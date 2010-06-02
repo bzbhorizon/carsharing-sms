@@ -74,7 +74,6 @@ public class SMSEntryServlet extends HttpServlet {
 			} else if (app.equals(apps[1][NAME])) { // summer
 				try {
 					SummerSMS ss = new SummerSMS(originator, smsChunks);
-					log.warning(Utility.sendSMS(originator, ss.getUsername() + " registered successfully. Nearer the end of your train journey, we'll send you instructions about what to do next"));
 					html += "<p>User " + ss.getUsername() + " registered</p>";
 				} catch (UserAlreadyExistsException ue) {
 					// send updated user message

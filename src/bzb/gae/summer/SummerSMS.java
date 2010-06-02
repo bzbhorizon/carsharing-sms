@@ -14,6 +14,7 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
 import bzb.gae.PMF;
+import bzb.gae.Utility;
 import bzb.gae.exceptions.BadArrivalTimeException;
 import bzb.gae.exceptions.TooFewArgumentsException;
 import bzb.gae.exceptions.TooManyArgumentsException;
@@ -59,6 +60,18 @@ public class SummerSMS {
 				}
 			} else {
 				throw new UserAlreadyExistsException();
+			}
+			
+			PersistenceManager pm = PMF.get().getPersistenceManager();
+			try {
+				Group group = pm.getObjectById(Group.class, getGroupKey());
+				if (!group.moreRoom()) { // what if a user in a group that is already full, updates their details? The group will get messaged again
+					group.mailGroup();
+				} else {
+					Utility.sendSMS(originator, "You're registered but your group is not full yet; nearer to your arrival time we'll tell you what to do next");
+				}
+			} finally {
+				pm.close();
 			}
 		}
 	}
@@ -172,7 +185,7 @@ public class SummerSMS {
 			    while (it.hasNext()) {
 					Group thisGroup = it.next();
 					if (thisGroup.getArrivalTime().equals(getArrivalTime()) && thisGroup.moreRoom()) {
-						log.warning("Assigning user to different existing group");
+						log.warning("Assigning user to existing group");
 						setGroupKey(thisGroup.getKey());
 						break;
 					}
