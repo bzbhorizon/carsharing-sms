@@ -140,12 +140,12 @@ public class SummerSMS {
 				log.warning("User already exists");
 	
 				if (user.getGroupKey() == null || !pm.getObjectById(Group.class, user.getGroupKey()).getArrivalTime().equals(getArrivalTime())) {
-					Query q = pm.newQuery("select from " + Group.class.getName() + " where arrivalTime == " + getArrivalTime());
-					List<Group> groups = (List<Group>) q.execute();
-					if (groups.size() > 0) {
+					Query q = pm.newQuery("select id from " + Group.class.getName() + " where arrivalTime == " + getArrivalTime());
+					List<Key> keys = (List<Key>) q.execute();
+					if (keys.size() > 0 && pm.getObjectById(Group.class, keys.get(0)).moreRoom()) {
 				    	log.warning("Assigning user to different existing group");
-				    	user.setGroupKey(groups.get(0).getKey());
-				    	setGroupKey(groups.get(0).getKey());
+				    	user.setGroupKey(keys.get(0));
+				    	setGroupKey(keys.get(0));
 				    } else {
 				    	log.warning("Creating a new group for user");
 				    	Group newGroup = new Group(getArrivalTime());
@@ -155,12 +155,13 @@ public class SummerSMS {
 				    }
 				} else {
 					log.warning("User's existing group is fine");
+					setGroupKey(user.getGroupKey());
 				}
 			} catch (JDOObjectNotFoundException je) {
 				log.warning("User doesn't exist yet");
-				Query q = pm.newQuery("select key from " + Group.class.getName() + " where arrivalTime == " + getArrivalTime());
+				Query q = pm.newQuery("select id from " + Group.class.getName() + " where arrivalTime == " + getArrivalTime());
 			    List<Key> keys = (List<Key>) q.execute();
-			    if (keys.size() > 0) {
+			    if (keys.size() > 0 && pm.getObjectById(Group.class, keys.get(0)).moreRoom()) {
 			    	log.warning("Assigning user to different existing group");
 			    	setGroupKey(keys.get(0));
 			    } else {

@@ -51,7 +51,7 @@ public class Group {
 	public int size() {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
-			Query q = pm.newQuery("select username from " + User.class.getName() + " where groupKey == " + getKey());
+			Query q = pm.newQuery("select id from " + User.class.getName() + " where groupKey == " + getKey().getId());
 			return ((List<String>) q.execute()).size();
 		} finally {
 			pm.close();
