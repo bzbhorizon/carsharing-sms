@@ -25,7 +25,7 @@ import bzb.gae.summer.jdo.Group;
 @SuppressWarnings("serial")
 public class EndOfJourneyChecker extends HttpServlet {
 
-	private static final int MINUTES_BEFORE_ARRIVAL = 15;
+	private static final int MINUTES_BEFORE_ARRIVAL = 10;
 	
 	private static final Logger log = Logger
 			.getLogger(EndOfJourneyChecker.class.getName());
@@ -41,8 +41,8 @@ public class EndOfJourneyChecker extends HttpServlet {
 		    while (it.hasNext()) {
 				Group thisGroup = it.next();
 				int minutesRemaining = Utility.getMinutesUntil(thisGroup.getArrivalTime());
-				if (minutesRemaining >= 0) {
-					if (minutesRemaining < MINUTES_BEFORE_ARRIVAL) {
+				if (minutesRemaining > 0) {
+					if (minutesRemaining <= MINUTES_BEFORE_ARRIVAL) {
 						log.warning(thisGroup.getKey().toString() + " near end of journey; arriving at " + thisGroup.getArrivalTime());
 						thisGroup.mailGroup();
 					} else {
