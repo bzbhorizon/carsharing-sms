@@ -28,6 +28,14 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-name>StateServlet</servlet-name>
 		<url-pattern>/summer/state</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>SendSMSServlet</servlet-name>
+		<servlet-class>bzb.gae.SendSMSServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SendSMSServlet</servlet-name>
+		<url-pattern>/sendSMS</url-pattern>
+	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>info</welcome-file>
 	</welcome-file-list>

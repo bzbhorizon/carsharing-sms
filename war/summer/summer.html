@@ -6,19 +6,16 @@
 <script type="text/javascript" src="../jquery-1.4.2.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function () {
+	$('#sms').hide();
 	$('#toggle_results').click(function() {
 		$('#summer_results').slideToggle(100);
 	});
-	
 	$('#toggle_results_empty').click(function() {
 		$('#summer_results_empty').slideToggle(100);
 	});
 	update();
 	setInterval(update,20000);
-});
-
-$(function() {
-	$('a#lightbox').lightBox();
+	$('#smsForm').submit(sendMessage);
 });
 
 function update () {
@@ -27,26 +24,62 @@ function update () {
 		$('#summer_results').empty();
 		for( i=0; i < data.groups.length; i++){
 			$('#summer_results').append('<div id="summer_results' + i + '" />');
+			$('#summer_results' + i).html('<h2 id="summer_results' + i + '_head">' + data.groups[i].id + ' has arrival time: ' + data.groups[i].arrivalTime + '</h2><p>Users:</p><ul id="users' + i + '"/>');
 			if (data.groups[i].arrived == true) {
 				$('#summer_results' + i).addClass('arrived');
+				$('#summer_results' + i + '_head').append(' (arrived)').addClass('arrived');
 			}
-			$('#summer_results' + i).html('<h2>' + data.groups[i].id + ' has arrival time: ' + data.groups[i].arrivalTime + '</h2><p>Users:</p><ul id="users' + i + '"/>');
 			$('#users' + i).empty();
 			for( j=0; j < data.groups[i].users.length; j++){
-				$('#users' + i).append('<li>' + data.groups[i].users[j].username + ' ' + data.groups[i].users[j].phoneNumber + '</li>');
+				$('#users' + i).append('<li>' + data.groups[i].users[j].username + ' <span class="phone" id="phone">' + data.groups[i].users[j].phoneNumber + '</span></li>');
+			}
+			$('#summer_results' + i).append('<p>Potential train matches:</p><ul id="trains' + i + '"/>');
+			$('#trains' + i).empty();
+			for( j=0; j < data.groups[i].matches.length; j++){
+				$('#trains' + i).append('<li>' + data.groups[i].matches[j].expected + ' from ' + data.groups[i].matches[j].station + ' (' + data.groups[i].matches[j].operator + ')</li>');
 			}
 		}
 		$('#summer_results_empty').html('<h2>Empty groups</h2><ul id="summer_results_empty_ul" />');
 		for( i=0; i < data.emptyGroups.length; i++){
-			$('#summer_results_empty_ul').html('<li>' + data.emptyGroups[i].id + ' has arrival time: ' + data.emptyGroups[i].arrivalTime + '</li>');
+			$('#summer_results_empty_ul').append('<li id="summer_results_empty_li' + i + '">' + data.emptyGroups[i].id + ' has arrival time: ' + data.emptyGroups[i].arrivalTime + '</li>');
+			if (data.emptyGroups[i].arrived == true) {
+				$('#summer_results_empty_li' + i).append(' (arrived)').addClass('arrived');
+			}
 		}
 		$('#updating').fadeOut('fast');
+		$('#phone').click(function() {
+			$('#smsTarget').html($(this).html());
+			$('#sms').slideDown(100);
+		});
 	});
+}
+
+function sendMessage () {
+	$.getJSON('http://carsharing-sms.appspot.com/sendSMS?recipient=' + $('#smsTarget').html() + '&body=' + $('#smsBody').val(), function(data) {
+		if (!data.success) {
+			alert('SMS failed for some reason');
+		}
+	});
+	$('#sms').slideUp(100);
+	return false;
 }
 </script>
 </head>
 <body>
 <h1>Summer School application</h1>
+<form id="smsForm">
+	<p class="box" id="sms">SMS to send to <span id="smsTarget">...</span>:
+		<input id="smsBody" type="text" maxlength="160" size="120" /> <span id="charsLeft"></span>
+
+<script>
+$('#smsBody').keyup(function () {
+	$('#charsLeft').html(160 - $(this).val().length);
+}).keyup();
+</script>
+
+  		<input type="submit" value="Send" />
+	</p>
+</form>
 <p class="topbox" id="toggle_results">Show/hide groups with users</p>
 <p class="bodybox" id="summer_results" />
 <p class="topbox" id="toggle_results_empty">Show/hide empty groups</p>
@@ -54,6 +87,7 @@ function update () {
 <p class="box">
 	<a class="box" href="http://appengine.google.com/dashboard?&app_id=carsharing-sms" target="new">Dashboard</a>
 	<a class="box" href="state" target="new">State JSON</a>
+	<a class="box" href="http://wiki.github.com/bzbhorizon/carsharing-sms/" target="new">Wiki</a>
 </p>
 <p class="box" id="updating">Updating ...</p>
 </body>

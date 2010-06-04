@@ -12,7 +12,7 @@ a:link,a:visited {
 
 h1 {
 	color: #00c0ff;
-	font-size: 16pt;
+	font-size: 20pt;
 	border-bottom: 1px solid #00c0ff;
 }
 
@@ -71,5 +71,13 @@ foot {
 }
 
 .arrived {
-	color: #333333;
+	color: #444444;
+}
+
+h2.arrived {
+	border-bottom: 1px dotted #444444;
+}
+
+.phone {
+	border-bottom: 1px dotted #444444;
 }
