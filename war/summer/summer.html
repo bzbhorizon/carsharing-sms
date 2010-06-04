@@ -6,6 +6,13 @@
 <script type="text/javascript" src="../jquery-1.4.2.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function () {
+	$('#toggle_results').click(function() {
+		$('#summer_results').slideToggle(100);
+	});
+	
+	$('#toggle_results_empty').click(function() {
+		$('#summer_results_empty').slideToggle(100);
+	});
 	update();
 	setInterval(update,20000);
 });
@@ -20,7 +27,10 @@ function update () {
 		$('#summer_results').empty();
 		for( i=0; i < data.groups.length; i++){
 			$('#summer_results').append('<div id="summer_results' + i + '" />');
-			$('#summer_results' + i).html('<h2>' + data.groups[i].id + ' arriving at ' + data.groups[i].arrivalTime + '</h2><p>Users:</p><ul id="users' + i + '"/>');
+			if (data.groups[i].arrived == true) {
+				$('#summer_results' + i).addClass('arrived');
+			}
+			$('#summer_results' + i).html('<h2>' + data.groups[i].id + ' has arrival time: ' + data.groups[i].arrivalTime + '</h2><p>Users:</p><ul id="users' + i + '"/>');
 			$('#users' + i).empty();
 			for( j=0; j < data.groups[i].users.length; j++){
 				$('#users' + i).append('<li>' + data.groups[i].users[j].username + ' ' + data.groups[i].users[j].phoneNumber + '</li>');
@@ -28,7 +38,7 @@ function update () {
 		}
 		$('#summer_results_empty').html('<h2>Empty groups</h2><ul id="summer_results_empty_ul" />');
 		for( i=0; i < data.emptyGroups.length; i++){
-			$('#summer_results_empty_ul').html('<li>' + data.emptyGroups[i].id + ' arriving at ' + data.emptyGroups[i].arrivalTime + '</li>');
+			$('#summer_results_empty_ul').html('<li>' + data.emptyGroups[i].id + ' has arrival time: ' + data.emptyGroups[i].arrivalTime + '</li>');
 		}
 		$('#updating').fadeOut('fast');
 	});
@@ -37,7 +47,9 @@ function update () {
 </head>
 <body>
 <h1>Summer School application</h1>
+<p class="topbox" id="toggle_results">Show/hide groups with users</p>
 <p class="bodybox" id="summer_results" />
+<p class="topbox" id="toggle_results_empty">Show/hide empty groups</p>
 <p class="bodybox" id="summer_results_empty" />
 <p class="box">
 	<a class="box" href="http://appengine.google.com/dashboard?&app_id=carsharing-sms" target="new">Dashboard</a>

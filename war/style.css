@@ -46,6 +46,16 @@ p.bodybox {
 	background-color: #171717;
 }
 
+p.topbox {
+	font-size: 8pt;
+	text-align: right;
+	color: black;
+	font-weight: bold;
+	border: 1px dotted white;
+	padding: 5px 20px 5px 20px;
+	background-color: white;
+}
+
 foot {
 	font-size: 6pt;
 	text-align: center;
@@ -58,4 +68,8 @@ foot {
 	border: 1px dotted white;
 	margin: 2px;
 	padding: 3px;
+}
+
+.arrived {
+	color: #333333;
 }
