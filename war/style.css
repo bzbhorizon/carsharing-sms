@@ -1,6 +1,9 @@
 body {
 	background-color: black;
+	background-image: url("stripe.png");
 	color: white;
+	font-size: 10pt;
+	font-family: Arial, Helvetica;
 }
 
 a:link,a:visited {
@@ -9,6 +12,13 @@ a:link,a:visited {
 
 h1 {
 	color: #00c0ff;
+	font-size: 16pt;
+	border-bottom: 1px solid #00c0ff;
+}
+
+h2 {
+	font-size: 12pt;
+	border-bottom: 1px dotted white;
 }
 
 .bold {
@@ -29,15 +39,23 @@ p.box {
 	padding: 5px;
 }
 
+p.bodybox {
+	color: white;
+	border: 1px dotted white;
+	padding: 5px 20px 5px 20px;
+	background-color: #171717;
+}
+
 foot {
 	font-size: 6pt;
 	text-align: center;
 }
 
 #updating {
-	color: green;
-	background-color: darkgreen;
-	border: 1px dotted green;
-	padding: 5px;
-	float: right;
+	position: absolute; bottom: 5px; right: 5px;
+	color: white;
+	background-color: green;
+	border: 1px dotted white;
+	margin: 2px;
+	padding: 3px;
 }
