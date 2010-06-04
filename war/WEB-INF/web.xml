@@ -36,6 +36,14 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-name>SendSMSServlet</servlet-name>
 		<url-pattern>/sendSMS</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>MeetMobileServlet</servlet-name>
+		<servlet-class>bzb.gae.meet.MobileServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>MeetMobileServlet</servlet-name>
+		<url-pattern>/meet/mobile</url-pattern>
+	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>info</welcome-file>
 	</welcome-file-list>
