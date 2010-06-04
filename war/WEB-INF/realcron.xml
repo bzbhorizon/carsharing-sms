@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<cronentries>
-  <cron>
-    <url>/cron/checkGroups</url>
-    <description>Regularly check for and inform unfinished groups that are nearing their arrival time</description>
-    <schedule>every 10 minutes synchronized</schedule>
-  </cron>
-</cronentries>

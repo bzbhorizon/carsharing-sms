@@ -7,13 +7,14 @@
 <script type="text/javascript">
 $(document).ready(function () {
 	update();
-	setInterval(update,5000);
+	setInterval(update,20000);
 });
 
 function update () {
+	$('#updating').fadeIn('slow');
 	$.getJSON('http://carsharing-sms.appspot.com/summer/state', function(data) {
 		$('#summer_results').empty();
-		for( i=0; i < data.length; i++){
+		for( i=0; i < data.groups.length; i++){
 			$('#summer_results').append('<div id="summer_results' + i + '" />');
 			$('#summer_results' + i).html('<h1>' + data[i].id + ' arriving at ' + data[i].arrivalTime + '</h1><p>Users:</p><ul id="users' + i + '"/>');
 			$('#users' + i).empty();
@@ -21,12 +22,18 @@ function update () {
 				$('#users' + i).append('<li>' + data[i].users[j].username + ' ' + data[i].users[j].phoneNumber + '</li>');
 			}
 		}
+		$('#summer_results').append('<h1>Empty groups</h1><ul id="summer_results_empty" />');
+		for( i=0; i < data.emptyGroups.length; i++){
+			$('#summer_results_empty').html('<li>' + data[i].id + ' arriving at ' + data[i].arrivalTime + '</li>');
+		}
+		$('#updating').fadeOut('fast');
 	});
-	
 }
 </script>
 </head>
 <body>
+<p class="box"><a class="box" href="http://appengine.google.com/dashboard?&app_id=carsharing-sms" target="new">Dashboard</a></div>
+<div id="updating">Updating ...</div>
 <div id="summer_results" />
 </body>
 </html>

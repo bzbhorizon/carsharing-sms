@@ -33,3 +33,11 @@ foot {
 	font-size: 6pt;
 	text-align: center;
 }
+
+#updating {
+	color: green;
+	background-color: darkgreen;
+	border: 1px dotted green;
+	padding: 5px;
+	float: right;
+}
