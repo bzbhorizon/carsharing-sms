@@ -43,10 +43,16 @@ public class Twitter {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		return new JSONObject(Utility.makeGetRequest("http://www.growlingfish.com/dtcsummer_twitter.php?q=" + queryString + "&since=" + getLastCheckedIDForApp(appName)));
+		JSONObject result;
+		if (appName != null) {
+			result = new JSONObject(Utility.makeGetRequest("http://www.growlingfish.com/dtcsummer_twitter.php?q=" + queryString + "&since=" + getLastCheckedIDForApp(appName))); 
+		} else {
+			result = new JSONObject(Utility.makeGetRequest("http://www.growlingfish.com/dtcsummer_twitter.php?q=" + queryString));
+		}
+		return result;
 	}
 	
-	public static int getLastCheckedIDForApp (String appName) {
+	public static long getLastCheckedIDForApp (String appName) {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
 			App app = pm.getObjectById(App.class, appName);
@@ -60,7 +66,7 @@ public class Twitter {
 		}
 	}
 	
-	public static void setLastCheckedIDForApp (String appName, int lastCheckedID) {
+	public static void setLastCheckedIDForApp (String appName, long lastCheckedID) {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
 			App app = pm.getObjectById(App.class, appName);
@@ -72,5 +78,9 @@ public class Twitter {
 		} finally {
 			pm.close();
 		}
+	}
+	
+	public static void sendDirectMessage (String target, String body) {
+		
 	}
 }

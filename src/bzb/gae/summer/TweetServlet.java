@@ -26,7 +26,7 @@ public class TweetServlet extends HttpServlet {
 		response.setContentType("text/plain");
 		JSONObject tweets = new JSONObject();
 		try {
-			tweets = Twitter.getSearchResultsByProxy("#dtcsummer", "summer");
+			tweets = Twitter.getSearchResultsByProxy("#dtcsummer", null);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

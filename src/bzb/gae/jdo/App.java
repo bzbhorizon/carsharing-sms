@@ -19,7 +19,7 @@ public class App {
     private String appName;
 	
 	@Persistent
-	private int lastCheckedTweetID;
+	private long lastCheckedTweetID;
 		
 	public App (String appName) {
 		setAppName(appName);
@@ -43,14 +43,14 @@ public class App {
 	/**
 	 * @param lastCheckedTweetID the lastCheckedTweetID to set
 	 */
-	public void setLastCheckedTweetID(int lastCheckedTweetID) {
+	public void setLastCheckedTweetID(long lastCheckedTweetID) {
 		this.lastCheckedTweetID = lastCheckedTweetID;
 	}
 
 	/**
 	 * @return the lastCheckedTweetID
 	 */
-	public int getLastCheckedTweetID() {
+	public long getLastCheckedTweetID() {
 		return lastCheckedTweetID;
 	}
 

@@ -76,6 +76,11 @@ public abstract class Utility {
 		Pattern p = Pattern.compile("^(((44\\s?\\d{4}|\\(?0\\d{4}\\)?)\\s?\\d{3}\\s?\\d{3})|((44\\s?\\d{3}|\\(?0\\d{3}\\)?)\\s?\\d{3}\\s?\\d{4})|((44\\s?\\d{2}|\\(?0\\d{2}\\)?)\\s?\\d{4}\\s?\\d{4}))(\\s?\\#(\\d{4}|\\d{3}))?$"); //http://regexlib.com/REDetails.aspx?regexp_id=593
 		return p.matcher(target).matches();
 	}
+	
+	public static boolean isValidTwitter (String target) {
+		Pattern p = Pattern.compile("^@(.+)");
+		return p.matcher(target).matches();
+	}
 
 	public static String ESENDEX_FORM = "https://www.esendex.com/secure/messenger/formpost/SendSMS.aspx";
 

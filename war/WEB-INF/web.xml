@@ -37,6 +37,14 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<url-pattern>/cron/summer/checkTweets</url-pattern>
 	</servlet-mapping>
 	<servlet>
+		<servlet-name>Nuke</servlet-name>
+		<servlet-class>bzb.gae.summer.Nuke</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Nuke</servlet-name>
+		<url-pattern>/summer/nuke</url-pattern>
+	</servlet-mapping>
+	<servlet>
 		<servlet-name>StateServlet</servlet-name>
 		<servlet-class>bzb.gae.summer.StateServlet</servlet-class>
 	</servlet>

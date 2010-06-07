@@ -16,6 +16,7 @@ import javax.jdo.annotations.PrimaryKey;
 
 import bzb.gae.PMF;
 import bzb.gae.Utility;
+import bzb.gae.ws.Twitter;
 
 import com.google.appengine.api.datastore.Key;
 
@@ -114,12 +115,21 @@ public class Group {
 		List<User> users = getUsers(null);
 		if (users.size() == 1) {
 			User user = users.get(0);
-			Utility.sendSMS(user.getPhoneNumber(), "Unfortunately there were no other travellers in your group");
+			String message = "Unfortunately there were no other travellers in your group";
+			if (Utility.isValidPhone(user.getPhoneNumber())) {
+				Utility.sendSMS(user.getPhoneNumber(), message);
+			} else if (Utility.isValidTwitter(user.getPhoneNumber())) {
+				Twitter.sendDirectMessage(user.getPhoneNumber(), message);
+			}
 		} else if (users.size() > 1) {
 			Iterator<User> i = users.iterator();
 			while (i.hasNext()) {
 				User user = i.next();
-				Utility.sendSMS(user.getPhoneNumber(), toString(user.getUsername()));
+				if (Utility.isValidPhone(user.getPhoneNumber())) {
+					Utility.sendSMS(user.getPhoneNumber(), toString(user.getUsername()));
+				} else if (Utility.isValidTwitter(user.getPhoneNumber())) {
+					Twitter.sendDirectMessage(user.getPhoneNumber(), toString(user.getUsername()));
+				}
 			}
 		}
 	}

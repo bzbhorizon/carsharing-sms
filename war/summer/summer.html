@@ -7,18 +7,17 @@
 <script type="text/javascript">
 $(document).ready(function () {
 	$('#sms').hide();
+	$('#tweet').hide();
 	$('#toggle_results').click(function() {
 		$('#summer_results').slideToggle(100);
 	});
 	$('#toggle_results_empty').click(function() {
 		$('#summer_results_empty').slideToggle(100);
 	});
-	$('#toggle_twitter_results').click(function() {
-		$('#twitter_results').slideToggle(100);
-	});
 	update();
 	setInterval(update,20000);
 	$('#smsForm').submit(sendMessage);
+	$('#tweetForm').submit(sendTweet);
 });
 
 function update () {
@@ -34,7 +33,11 @@ function update () {
 			}
 			$('#users' + i).empty();
 			for( j=0; j < data.groups[i].users.length; j++){
-				$('#users' + i).append('<li>' + data.groups[i].users[j].username + ' <span class="phone" id="phone">' + data.groups[i].users[j].phoneNumber + '</span></li>');
+				if (data.groups[i].users[j].phoneNumber.match("^@") != null) {
+					$('#users' + i).append('<li>' + data.groups[i].users[j].username + ' <span class="phone" id="twitter">' + data.groups[i].users[j].phoneNumber + '</span></li>');
+				} else {
+					$('#users' + i).append('<li>' + data.groups[i].users[j].username + ' <span class="phone" id="phone">' + data.groups[i].users[j].phoneNumber + '</span></li>');
+				}
 			}
 			$('#summer_results' + i).append('<p>Potential train matches:</p><ul id="trains' + i + '"/>');
 			$('#trains' + i).empty();
@@ -55,6 +58,10 @@ function update () {
 			$('#smsTarget').html($(this).html());
 			$('#sms').slideDown(100);
 		});
+		$('#twitter').click(function() {
+			$('#tweetTarget').html($(this).html());
+			$('#tweet').slideDown(100);
+		});
 	});
 }
 
@@ -67,17 +74,40 @@ function sendMessage () {
 	$('#sms').slideUp(100);
 	return false;
 }
+
+function sendTweet () {
+	$.getJSON('http://carsharing-sms.appspot.com/sendTweet?recipient=' + $('#tweetTarget').html() + '&body=' + $('#tweetBody').val(), function(data) {
+		if (!data.success) {
+			alert('Tweet failed for some reason');
+		}
+	});
+	$('#tweet').slideUp(100);
+	return false;
+}
 </script>
 </head>
 <body>
 <h1>Summer School application</h1>
 <form id="smsForm">
 	<p class="box" id="sms">SMS to send to <span id="smsTarget">...</span>:
-		<input id="smsBody" type="text" maxlength="160" size="120" /> <span id="charsLeft"></span>
+		<input id="smsBody" type="text" maxlength="160" size="120" /> <span id="smsCharsLeft"></span>
 
 <script>
 $('#smsBody').keyup(function () {
-	$('#charsLeft').html(160 - $(this).val().length);
+	$('#smsCharsLeft').html(160 - $(this).val().length);
+}).keyup();
+</script>
+
+  		<input type="submit" value="Send" />
+	</p>
+</form>
+<form id="tweetForm">
+	<p class="box" id="tweet">Twitter message to send to <span id="tweetTarget">...</span>:
+		<input id="tweetBody" type="text" maxlength="140" size="100" /> <span id="tweetCharsLeft"></span>
+
+<script>
+$('#tweetBody').keyup(function () {
+	$('#tweetCharsLeft').html(160 - $(this).val().length);
 }).keyup();
 </script>
 
@@ -89,10 +119,11 @@ $('#smsBody').keyup(function () {
 <p class="topbox" id="toggle_results_empty">Show/hide empty groups</p>
 <p class="bodybox" id="summer_results_empty" />
 <p class="box">
-	<a class="box" href="http://appengine.google.com/dashboard?&app_id=carsharing-sms" target="new">Dashboard</a>
-	<a class="box" href="state" target="new">State JSON</a>
-	<a class="box" href="tweets" target="new">Tweets JSON</a>
-	<a class="box" href="http://www.mrl.nott.ac.uk/~bzb/carshare/doku.php?id=dtc_summer_school_journey_sharing_application" target="new">Wiki</a>
+	<a class="box" href="http://appengine.google.com/dashboard?&app_id=carsharing-sms" target="_blank">Dashboard</a>
+	<a class="box" href="state" target="_blank">State JSON</a>
+	<a class="box" href="tweets" target="_blank">Tweets JSON</a>
+	<a class="box" href="http://www.mrl.nott.ac.uk/~bzb/carshare/doku.php?id=dtc_summer_school_journey_sharing_application" target="_blank">Wiki</a>
+	<a class="box" href="nuke" target="_blank">Restart app <span style="color: red;">(wipes everything!)</span></a>
 </p>
 <p class="box" id="updating">Updating ...</p>
 </body>
