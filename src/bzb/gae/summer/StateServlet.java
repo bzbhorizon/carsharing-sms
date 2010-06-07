@@ -33,13 +33,6 @@ public class StateServlet extends HttpServlet {
 	throws IOException {
 		response.setContentType("text/plain");
 		
-		JSONArray trains = null;
-		try {
-			trains = Trains.getTrainsArrivingAt("not");
-		} catch (JSONException e1) {
-			e1.printStackTrace();
-		}
-		
 		JSONObject body = null;
 		JSONArray nonEmptyGroups = new JSONArray();
 		JSONArray emptyGroups = new JSONArray();
@@ -61,16 +54,7 @@ public class StateServlet extends HttpServlet {
 					} else {
 						groupJson.put("arrived", true);
 					}
-					JSONArray trainsJson = new JSONArray();
-					if (trains != null) {
-						for (int i = 0; i < trains.length(); i++) {
-							JSONObject train = (JSONObject) trains.get(i);
-							String[] scheduled = ((String)train.get("scheduled")).split(":");
-							if ((scheduled[0] + scheduled[1]).equals(thisGroup.getArrivalTime())) {
-								trainsJson.put(train);
-							}
-						}
-					}
+					JSONArray trainsJson = Trains.getTrainsArrivingAt("not", thisGroup.getArrivalTime());
 					groupJson.put("matches", trainsJson);
 					if (users.size() > 0) {
 						JSONArray usersJson = new JSONArray();

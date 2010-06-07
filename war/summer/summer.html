@@ -13,6 +13,9 @@ $(document).ready(function () {
 	$('#toggle_results_empty').click(function() {
 		$('#summer_results_empty').slideToggle(100);
 	});
+	$('#toggle_twitter_results').click(function() {
+		$('#twitter_results').slideToggle(100);
+	});
 	update();
 	setInterval(update,20000);
 	$('#smsForm').submit(sendMessage);
@@ -23,7 +26,7 @@ function update () {
 	$.getJSON('http://carsharing-sms.appspot.com/summer/state', function(data) {
 		$('#summer_results').empty();
 		for( i=0; i < data.groups.length; i++){
-			$('#summer_results').append('<div id="summer_results' + i + '" />');
+			$('#summer_results').append('<div class="bodybox" id="summer_results' + i + '" />');
 			$('#summer_results' + i).html('<h2 id="summer_results' + i + '_head">' + data.groups[i].id + ' has arrival time: ' + data.groups[i].arrivalTime + '</h2><p>Users:</p><ul id="users' + i + '"/>');
 			if (data.groups[i].arrived == true) {
 				$('#summer_results' + i).addClass('arrived');
@@ -46,6 +49,7 @@ function update () {
 				$('#summer_results_empty_li' + i).append(' (arrived)').addClass('arrived');
 			}
 		}
+		
 		$('#updating').fadeOut('fast');
 		$('#phone').click(function() {
 			$('#smsTarget').html($(this).html());
@@ -81,13 +85,14 @@ $('#smsBody').keyup(function () {
 	</p>
 </form>
 <p class="topbox" id="toggle_results">Show/hide groups with users</p>
-<p class="bodybox" id="summer_results" />
+<p id="summer_results" />
 <p class="topbox" id="toggle_results_empty">Show/hide empty groups</p>
 <p class="bodybox" id="summer_results_empty" />
 <p class="box">
 	<a class="box" href="http://appengine.google.com/dashboard?&app_id=carsharing-sms" target="new">Dashboard</a>
 	<a class="box" href="state" target="new">State JSON</a>
-	<a class="box" href="http://wiki.github.com/bzbhorizon/carsharing-sms/" target="new">Wiki</a>
+	<a class="box" href="tweets" target="new">Tweets JSON</a>
+	<a class="box" href="http://www.mrl.nott.ac.uk/~bzb/carshare/doku.php?id=dtc_summer_school_journey_sharing_application" target="new">Wiki</a>
 </p>
 <p class="box" id="updating">Updating ...</p>
 </body>

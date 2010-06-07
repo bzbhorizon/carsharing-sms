@@ -39,7 +39,7 @@ p.box {
 	padding: 5px;
 }
 
-p.bodybox {
+p.bodybox,div.bodybox {
 	color: white;
 	border: 1px dotted white;
 	padding: 5px 20px 5px 20px;

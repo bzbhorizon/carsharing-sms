@@ -18,7 +18,23 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>EndOfJourneyChecker</servlet-name>
-		<url-pattern>/cron/checkGroups</url-pattern>
+		<url-pattern>/cron/summer/checkGroups</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>TweetServlet</servlet-name>
+		<servlet-class>bzb.gae.summer.TweetServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>TweetServlet</servlet-name>
+		<url-pattern>/summer/tweets</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>TweetChecker</servlet-name>
+		<servlet-class>bzb.gae.summer.TweetChecker</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>TweetChecker</servlet-name>
+		<url-pattern>/cron/summer/checkTweets</url-pattern>
 	</servlet-mapping>
 	<servlet>
 		<servlet-name>StateServlet</servlet-name>
