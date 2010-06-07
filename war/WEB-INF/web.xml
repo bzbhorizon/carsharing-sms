@@ -61,6 +61,14 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<url-pattern>/sendSMS</url-pattern>
 	</servlet-mapping>
 	<servlet>
+		<servlet-name>SendTweetServlet</servlet-name>
+		<servlet-class>bzb.gae.SendTweetServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SendTweetServlet</servlet-name>
+		<url-pattern>/sendTweet</url-pattern>
+	</servlet-mapping>
+	<servlet>
 		<servlet-name>MeetMobileServlet</servlet-name>
 		<servlet-class>bzb.gae.meet.MobileServlet</servlet-class>
 	</servlet>

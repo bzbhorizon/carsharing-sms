@@ -80,7 +80,11 @@ public class Twitter {
 		}
 	}
 	
-	public static void sendDirectMessage (String target, String body) {
-		
+	public static boolean sendDirectMessage (String target, String body) {
+		if (Utility.isValidTwitter(target)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
