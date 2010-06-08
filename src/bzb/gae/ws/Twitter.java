@@ -12,6 +12,8 @@ import javax.jdo.PersistenceManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
 import bzb.gae.PMF;
 import bzb.gae.Utility;
 import bzb.gae.jdo.App;
@@ -82,7 +84,15 @@ public class Twitter {
 	
 	public static boolean sendDirectMessage (String target, String body) {
 		if (Utility.isValidTwitter(target)) {
-			return true;
+			target = target.substring(1); // remove the @
+			twitter4j.Twitter twitter = new TwitterFactory().getInstance("horizoncar","horizon2010");
+		    try {
+				twitter.sendDirectMessage(target, body);
+				return true;
+			} catch (TwitterException e) {
+				e.printStackTrace();
+				return false;
+			}
 		} else {
 			return false;
 		}
