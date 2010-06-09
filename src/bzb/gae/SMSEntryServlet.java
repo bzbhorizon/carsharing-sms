@@ -12,6 +12,7 @@ import bzb.gae.exceptions.BadArrivalTimeException;
 import bzb.gae.exceptions.TooFewArgumentsException;
 import bzb.gae.exceptions.TooManyArgumentsException;
 import bzb.gae.exceptions.UserAlreadyExistsException;
+import bzb.gae.exceptions.UserNotFoundException;
 import bzb.gae.meet.MeetSMS;
 import bzb.gae.summer.SummerSMS;
 
@@ -24,8 +25,8 @@ public class SMSEntryServlet extends HttpServlet {
 	private static final String[][] apps = {
 			{ "meet", "ben ng35bb yes\" to register ben as a driver",
 					"ben ng3bb\" to register ben as a passenger" },
-			{ "summer", "ben 1342\" to register ben on the 1:42PM train",
-						"ben 942\" to register ben on the 9:42AM train" } };
+			{ "summer", "ben 1342\" for ben on 1:42PM train",
+						"ben\" to remove ben" } };
 	private static final int NAME = 0;
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -95,6 +96,10 @@ public class SMSEntryServlet extends HttpServlet {
 					log.warning(Utility.sendSMS(originator, "There were too few words in your SMS; you could text something like " + getUsageInfoForSMS(1)));
 					html += getUsageInfo(1);
 					log.warning("tfe");
+				} catch (UserNotFoundException e) {
+					// send user not found message
+					log.warning(Utility.sendSMS(originator, "You tried to unregister a user but we couldn't find the user in the system"));
+					log.warning("unfe");
 				}
 			} else {
 				html += getUsageInfo();
@@ -144,12 +149,12 @@ public class SMSEntryServlet extends HttpServlet {
 	
 	public String getUsageInfoForSMS (int app) {
 		String smsBody = "";
-		//for (int i = 1; i < apps[app].length; i++) {
+		for (int i = 1; i < apps[app].length; i++) {
 			smsBody += "\"" + apps[app][NAME] + " " + apps[app][1];
-			//if (i < apps[app].length - 1) {
-			//	smsBody += " or ";
-			//}
-		//}
+			if (i < apps[app].length - 1) {
+				smsBody += " or ";
+			}
+		}
 		
 		return smsBody;
 	}

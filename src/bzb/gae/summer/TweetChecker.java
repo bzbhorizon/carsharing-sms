@@ -19,6 +19,7 @@ import bzb.gae.exceptions.BadArrivalTimeException;
 import bzb.gae.exceptions.TooFewArgumentsException;
 import bzb.gae.exceptions.TooManyArgumentsException;
 import bzb.gae.exceptions.UserAlreadyExistsException;
+import bzb.gae.exceptions.UserNotFoundException;
 import bzb.gae.ws.Twitter;
 
 /**
@@ -55,6 +56,8 @@ public class TweetChecker extends HttpServlet {
 					} catch (TooManyArgumentsException e) {
 						e.printStackTrace();
 					} catch (TooFewArgumentsException e) {
+						e.printStackTrace();
+					} catch (UserNotFoundException e) {
 						e.printStackTrace();
 					}
 				}

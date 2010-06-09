@@ -1,36 +1,129 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
-<head>
-<title>Workshop on Technology-mediated Journey Sharing - Horizon Digital Economy DTC Summer School</title>
-<link href="style.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="../jquery-1.4.2.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function () {
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd"> 
+<html lang="en"> 
+<head> 
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+	<title>Workshop on Technology-mediated Journey Sharing - Horizon Digital Economy DTC Summer School</title> 
+	<meta name="description" content="Workshop on Technology-mediated Journey Sharing - Horizon Digital Economy DTC Summer School"> 
+	<meta name="copyright" content="Copyright (c) 2010 Ben Bedwell"> 
+	<meta name="author" content="Ben Bedwell"> 
+	<link type="text/css" href="../style.css" rel="stylesheet" />
+	<style type="text/css" media="screen, print, projection"> 
+	body,
+	html {
+		padding: 20px;
+	}
+	#wrap {
+		width:750px;
+		margin:0 auto;
+		background:#171717;
+		border: 1pt solid white;
+	}
+	#header {
+    	padding:5px 10px;
+		background:#171717;
+	}
+	#nav {
+		padding:5px 10px;
+		background:#006699;
+	}
+	#nav ul {
+		margin:0;
+		padding:0;
+		list-style:none;
+	}
+	#nav li {
+		display:inline;
+		margin:0;
+		padding:0;
+	}
+	#main {
+		float:left;
+		width:480px;
+		padding:10px;
+		background:#171717;
+	}
+	h2 {
+		margin:0 0 1em;
+	}
+	#sidebar {
+		float:right;
+		width:230px;
+		padding:10px;
+		background:#171717;
+	}
+	#footer {
+		clear:both;
+		padding:5px 10px;
+		background:#006699;
+	}
+	#footer p {
+		margin:0;
+    }
+	* html #footer {
+		height:1px;
+	}
+	</style>
+	<script type="text/javascript" src="../jquery-1.4.2.min.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function () {
+		update();
+		setInterval(update,120000);
+	});
 	
-});
-</script>
-</head>
-<body>
-<h1>Workshop on Technology-mediated Journey Sharing</h1>
-<h2>Call for participation</h2>
-<p>This is an open call for participants to a *workshop* during the Horizon DTC Summer School on the theme of technology-mediated journey sharing.</p>
-<p>Title: Technology-mediated journey sharing</p>
-<p>Date: 16th of July, 2010</p>
-<p>Time: 0930-1230 (BST)</p>
-<p>As part of Horizon research into the connected journey made possible by ubiquitous computing, we consider how the benefits of journey sharing might be reaped by reducing barriers to sharing through mediation by technology.</p>
-<p>The project aims to produce a number of different demonstrator applications to encourage journey sharing; students have the opportunity to take part in a trial of one of these, using their mobile phone to coordinate their journeys to the Summer School with one another.</p>
-<p>The Summer School workshop will allow Horizon researchers to explain the role of this and other trials in the Car Share project, provide a forum for students who participated in the trial to reflect on their experience and feed back into the project, and encourage a more general discussion about the implications of emerging technologies for travel behaviour.</p>
-<p>For further details, or to register your intent to participate, please contact either Ben Bedwell (bzb@cs.nott.ac.uk) or Ainojie Irune (aai@cs.nott.ac.uk). Please note that there are limited places at the workshop. Participation will be greatly appreciated and will contribute to ongoing Horizon research.</p>
-<h2>Trial</h2>
-<h3>Overview</h3>
-<h3>Sign-up</h3>
-<p>Those not attending the workshop are encouraged to participate</p>
-<h2>Workshop</h2>
-<h3>Sessions</h3>
-<ul>
-<li>9.30 Context (journey sharing + trial recap)</li>
-<li>10.30 User feedback/discussion, incl. break at 11.00</li>
-<li>12.30 Close</li>
-</ul>
-</body>
+	function update () {
+		$('#tweets').fadeOut('fast');
+		$.getJSON('http://carsharing-sms.appspot.com/summer/tweets', function(data) {
+			$('#tweets').empty();
+			for( i=0; i < data.results.length; i++){
+				$('#tweets').append('<div style="padding: 10px 0px 10px 0px; font-style: italic;"><a href="http://www.twitter.com/' + data.results[i].from_user + '" target="_blank">' + data.results[i].from_user + '</a> said "' + data.results[i].text + '" (' + data.results[i].created_at + ')</div>');
+			}
+			$('#tweets').fadeIn('slow');
+		});
+	}
+	</script>
+</head> 
+<body> 
+<div id="wrap"> 
+	<div id="header"><h1>Workshop on Technology-mediated Journey Sharing</h1></div> 
+	<div id="nav"> 
+		<ul> 
+			<li><a href="#call">Call for participation</a></li> 
+			<li><a href="#trial">Trial</a></li> 
+			<li><a href="#workshop">Workshop</a></li> 
+		</ul> 
+	</div> 
+	<div id="main"> 
+		<h2 id="call">Call for participation</h2> 
+		<p>This is an open call for participants to a <span style="font-weight: bold;">workshop</span> during the Horizon DTC Summer School on the theme of technology-mediated journey sharing.</p>
+		<p>Title: Technology-mediated journey sharing</p>
+		<p>Date: 16th of July, 2010</p>
+		<p>Time: 0930-1230 (BST)</p>
+		<p>As part of Horizon research into the connected journey made possible by ubiquitous computing, we consider how the benefits of journey sharing might be reaped by reducing barriers to sharing through mediation by technology.</p>
+		<p>The project aims to produce a number of different demonstrator applications to encourage journey sharing; students have the opportunity to take part in a trial of one of these, using their mobile phone to coordinate their journeys to the Summer School with one another.</p>
+		<p>The Summer School workshop will allow Horizon researchers to explain the role of this and other trials in the Car Share project, provide a forum for students who participated in the trial to reflect on their experience and feed back into the project, and encourage a more general discussion about the implications of emerging technologies for travel behaviour.</p>
+		<p>For further details, or to register your intent to participate, please contact either <span style="font-weight: bold;">Ben Bedwell</span> (bzb@cs.nott.ac.uk) or <span style="font-weight: bold;">Ainojie Irune</span> (aai@cs.nott.ac.uk). Please note that there are limited places at the workshop. Participation will be greatly appreciated and will contribute to ongoing Horizon research.</p>
+		<h2 id="trial">Trial</h2>
+		<h3>Overview</h3>
+		<p>Blah</p>
+		<h3>Sign-up</h3>
+		<p>Those not attending the workshop are encouraged to participate</p>
+		<h2 id="workshop">Workshop</h2>
+		<h3>Sessions</h3>
+		<ul>
+			<li>9.30 Context (journey sharing + trial recap)</li>
+			<li>10.30 User feedback/discussion, incl. break at 11.00</li>
+			<li>12.30 Close</li>
+		</ul> 
+	</div> 
+	<div id="sidebar"> 
+		<h2>#dtcsummer</h2> 
+		<p>Follow the progress of the trial</p> 
+		<div id="tweets"></div>
+	</div>
+	<div id="footer"> 
+		<p><a href="https://www.horizon.ac.uk/" target="_blank">Horizon Digital Economy Research</a></p> 
+	</div> 
+</div> 
+</body> 
 </html>

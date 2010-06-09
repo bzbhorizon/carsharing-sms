@@ -21,6 +21,10 @@ h2 {
 	border-bottom: 1px dotted white;
 }
 
+h3 {
+	font-size: 12pt;
+}
+
 .bold {
 	color: #00FF66;
 	font-weight: bold;

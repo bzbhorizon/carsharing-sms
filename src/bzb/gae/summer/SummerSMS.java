@@ -19,6 +19,7 @@ import bzb.gae.exceptions.BadArrivalTimeException;
 import bzb.gae.exceptions.TooFewArgumentsException;
 import bzb.gae.exceptions.TooManyArgumentsException;
 import bzb.gae.exceptions.UserAlreadyExistsException;
+import bzb.gae.exceptions.UserNotFoundException;
 import bzb.gae.summer.jdo.Group;
 import bzb.gae.summer.jdo.User;
 
@@ -40,10 +41,21 @@ public class SummerSMS {
 
 	public SummerSMS(String originator, String[] smsChunks)
 			throws UserAlreadyExistsException, BadArrivalTimeException,
-			TooManyArgumentsException, TooFewArgumentsException {
+			TooManyArgumentsException, TooFewArgumentsException, UserNotFoundException {
 		if (smsChunks.length > EXPECTED_PARAMETERS) {
 			throw new TooManyArgumentsException();
 		} else if (smsChunks.length < EXPECTED_PARAMETERS) {
+			PersistenceManager pm = PMF.get().getPersistenceManager();
+			try {
+				String username = smsChunks[1].trim();
+				User user = pm.getObjectById(User.class, username);
+				pm.deletePersistent(user);
+				Utility.sendSMS(originator, "Successfully removed your user from the experience");
+			} catch (JDOObjectNotFoundException je) {
+				throw new UserNotFoundException();
+			} finally {
+				pm.close();
+			}
 			throw new TooFewArgumentsException();
 		} else {
 			setOriginator(originator);
