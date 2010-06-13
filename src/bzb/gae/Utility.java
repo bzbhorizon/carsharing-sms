@@ -21,6 +21,7 @@ public abstract class Utility {
 
 	// http://carsharesms.appspot.com/csdemo
 
+	public static final int REFRESH_PERIOD = 20;
 	private static final Logger log = Logger.getLogger(Utility.class.getName());
 
 	public static String makeGetRequest(String request) {
@@ -79,6 +80,11 @@ public abstract class Utility {
 	
 	public static boolean isValidTwitter (String target) {
 		Pattern p = Pattern.compile("^@(.+)");
+		return p.matcher(target).matches();
+	}
+	
+	public static boolean isValidFacebookURL (String target) {
+		Pattern p = Pattern.compile("^http://www.facebook.com/profile.php?id=([0-9]+)$");
 		return p.matcher(target).matches();
 	}
 
@@ -142,7 +148,7 @@ public abstract class Utility {
 				+ "<head><title>"
 				+ title
 				+ "</title>"
-				+ "<meta http-equiv=\"refresh\" content=\"20\">"
+				+ "<meta http-equiv=\"refresh\" content=\"" + REFRESH_PERIOD + "\">"
 				+ "<link href=\"style.css\" rel=\"stylesheet\" type=\"text/css\" />"
 				+ "</head>";
 

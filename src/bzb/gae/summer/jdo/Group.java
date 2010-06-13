@@ -39,6 +39,24 @@ public class Group {
 	public Group (String arrivalTime) {
 		setArrivalTime(arrivalTime);
 	}
+	
+	public static Group getGroup (Key key) {
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		try {
+			Query q = pm.newQuery("select from " + Group.class.getName());
+		    List<Group> groups = (List<Group>) q.execute();
+		    Iterator<Group> it = groups.iterator();
+		    while (it.hasNext()) {
+				Group thisGroup = it.next();
+				if (thisGroup.key.equals(key)) {
+					return thisGroup;
+				}
+		    }
+		} finally {
+			pm.close();
+		}
+		return null;
+	}
 
 	public Key getKey() {
         return key;

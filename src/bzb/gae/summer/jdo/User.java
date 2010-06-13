@@ -3,9 +3,16 @@
  */
 package bzb.gae.summer.jdo;
 
+import java.util.Iterator;
+import java.util.List;
+
+import javax.jdo.PersistenceManager;
+import javax.jdo.Query;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+
+import bzb.gae.PMF;
 
 import com.google.appengine.api.datastore.Key;
 
@@ -34,6 +41,24 @@ public class User {
 		setPhoneNumber(phoneNumber);
 		setArrivalTime(arrivalTime);
 		setGroupKey(groupKey);
+	}
+	
+	public static User getUser (String phoneNumber) {
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		try {
+			Query q = pm.newQuery("select from " + User.class.getName());
+		    List<User> users = (List<User>) q.execute();
+		    Iterator<User> it = users.iterator();
+		    while (it.hasNext()) {
+				User thisUser = it.next();
+				if (thisUser.getPhoneNumber().equals(phoneNumber)) {
+					return thisUser;
+				}
+		    }
+		} finally {
+			pm.close();
+		}
+		return null;
 	}
 
 	public void setUsername(String username) {

@@ -35,6 +35,8 @@ function update () {
 			for( j=0; j < data.groups[i].users.length; j++){
 				if (data.groups[i].users[j].phoneNumber.match("^@") != null) {
 					$('#users' + i).append('<li>' + data.groups[i].users[j].username + ' <span class="phone" id="twitter">' + data.groups[i].users[j].phoneNumber + '</span></li>');
+				} else if (data.groups[i].users[j].phoneNumber.match("^h") != null) {
+					$('#users' + i).append('<li>' + data.groups[i].users[j].username + ' <a class="phone" href="' + data.groups[i].users[j].phoneNumber + '" target="_blank">Facebook</a></li>');
 				} else {
 					$('#users' + i).append('<li>' + data.groups[i].users[j].username + ' <span class="phone" id="phone">' + data.groups[i].users[j].phoneNumber + '</span></li>');
 				}

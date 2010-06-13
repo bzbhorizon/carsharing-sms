@@ -53,6 +53,14 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<url-pattern>/summer/state</url-pattern>
 	</servlet-mapping>
 	<servlet>
+		<servlet-name>SummerMobileServlet</servlet-name>
+		<servlet-class>bzb.gae.summer.MobileServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SummerMobileServlet</servlet-name>
+		<url-pattern>/summer/mobile</url-pattern>
+	</servlet-mapping>
+	<servlet>
 		<servlet-name>SendSMSServlet</servlet-name>
 		<servlet-class>bzb.gae.SendSMSServlet</servlet-class>
 	</servlet>
