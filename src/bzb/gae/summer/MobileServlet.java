@@ -43,13 +43,14 @@ public class MobileServlet extends HttpServlet {
 			FacebookCookie userCookie = null;
 			
 			Cookie[] cookies = request.getCookies();
-			for (int i = 0; i < cookies.length; i++) {
-				if (cookies[i].getName().equals("fbs_" + CLIENT_ID)) {
-					userCookie = new FacebookCookie(cookies[i]);
-					break;
+			if (cookies != null) {
+				for (int i = 0; i < cookies.length; i++) {
+					if (cookies[i].getName().equals("fbs_" + CLIENT_ID)) {
+						userCookie = new FacebookCookie(cookies[i]);
+						break;
+					}
 				}
 			}
-			
 			String html = "<body>";
 			
 			if (userCookie != null) {
