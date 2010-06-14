@@ -84,7 +84,7 @@ public abstract class Utility {
 	}
 	
 	public static boolean isValidFacebookURL (String target) {
-		Pattern p = Pattern.compile("^http://www.facebook.com/profile.php?id=([0-9]+)$");
+		Pattern p = Pattern.compile("^http://www.facebook.com/(.+)$");
 		return p.matcher(target).matches();
 	}
 

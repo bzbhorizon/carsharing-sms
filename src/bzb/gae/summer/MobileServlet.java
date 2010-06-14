@@ -125,7 +125,7 @@ public class MobileServlet extends HttpServlet {
 						"Username:" +
 						"<input type=\"text\" name=\"user\" size=\"20\" value=\"" + userCookie.getName()[0] + " " + userCookie.getName()[1] + "\" /><br />" +
 						"Scheduled arrival time:" +
-						"<input type=\"text\" name=\"arrival\" size=\"4\" value=\"" + new SimpleDateFormat("km").format(new Date(System.currentTimeMillis() + 1000*60*60)) + "\" /><br />" +
+						"<input type=\"text\" name=\"arrival\" size=\"4\" value=\"" + new SimpleDateFormat("kkmm").format(new Date(System.currentTimeMillis() + 1000*60*60)) + "\" /><br />" +
 						"<input type=\"submit\" value=\"Submit\" />" +
 						"</form>";
 			} else {
