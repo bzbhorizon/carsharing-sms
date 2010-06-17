@@ -76,12 +76,12 @@ public class MobileServlet extends HttpServlet {
 						while (it.hasNext()) {
 							User thisUser = it.next();
 							html += "<li>" + thisUser.getUsername() + " (";
-							if (Utility.isValidPhone(thisUser.getPhoneNumber())) {
-								html += "Tel: " + thisUser.getPhoneNumber();
-							} else if (Utility.isValidTwitter(thisUser.getPhoneNumber())) {
-								html += "Twitter: <a href=\"http://www.twitter.com/" + thisUser.getPhoneNumber().substring(1) + "\" target=\"_blank\">" + thisUser.getPhoneNumber() + "</a>";
-							} else if (Utility.isValidFacebookURL(thisUser.getPhoneNumber())){
-								html += "Facebook: <a href=\"" + thisUser.getPhoneNumber() + "\" target=\"_blank\">" + thisUser.getPhoneNumber() + "</a>";
+							if (Utility.isValidPhone(thisUser.getContact())) {
+								html += "Tel: " + thisUser.getContact();
+							} else if (Utility.isValidTwitter(thisUser.getContact())) {
+								html += "Twitter: <a href=\"http://www.twitter.com/" + thisUser.getContact().substring(1) + "\" target=\"_blank\">" + thisUser.getContact() + "</a>";
+							} else if (Utility.isValidFacebookURL(thisUser.getContact())){
+								html += "Facebook: <a href=\"" + thisUser.getContact() + "\" target=\"_blank\">" + thisUser.getContact() + "</a>";
 							}
 							html += ")</li>";
 						}

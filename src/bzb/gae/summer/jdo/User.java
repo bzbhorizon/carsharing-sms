@@ -28,7 +28,7 @@ public class User {
     private String username;
 	
 	@Persistent
-	private String phoneNumber;
+	private String contact;
 	
 	@Persistent
 	private String arrivalTime;
@@ -38,7 +38,7 @@ public class User {
 	
 	public User (String username, String phoneNumber, String arrivalTime, Key groupKey) {
 		setUsername(username);
-		setPhoneNumber(phoneNumber);
+		setContact(phoneNumber);
 		setArrivalTime(arrivalTime);
 		setGroupKey(groupKey);
 	}
@@ -51,7 +51,7 @@ public class User {
 		    Iterator<User> it = users.iterator();
 		    while (it.hasNext()) {
 				User thisUser = it.next();
-				if (thisUser.getPhoneNumber().equals(phoneNumber)) {
+				if (thisUser.getContact().equals(phoneNumber)) {
 					return thisUser;
 				}
 		    }
@@ -69,12 +69,12 @@ public class User {
 		return username;
 	}
 
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
+	public void setContact(String contact) {
+		this.contact = contact;
 	}
 
-	public String getPhoneNumber() {
-		return phoneNumber;
+	public String getContact() {
+		return contact;
 	}
 
 	public void setArrivalTime(String arrivalTime) {

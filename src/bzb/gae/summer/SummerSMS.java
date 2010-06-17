@@ -114,7 +114,7 @@ public class SummerSMS {
 				setUsername(username);
 				user.setArrivalTime(arrivalTime);
 				setArrivalTime(arrivalTime);
-				user.setPhoneNumber(getOriginator());
+				user.setContact(getOriginator());
 			} catch (JDOObjectNotFoundException je) {
 				setArrivalTime(arrivalTime);
 				setUsername(username);

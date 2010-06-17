@@ -10,7 +10,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import bzb.gae.Utility;
-import bzb.gae.summer.TweetChecker;
 
 /**
  * @author psxbdb
@@ -27,7 +26,11 @@ public abstract class Trains {
 		String requestURL = LDB_URL + "arrivals/?station=" + stationCode + "&limit=30&format=json";
 		String response = Utility.makeGetRequest(requestURL);
 		log.warning(response);
-		return new JSONArray(response);
+		if (response != null) {
+			return new JSONArray(response);
+		} else {
+			return new JSONArray();
+		}
 	}
 	
 	public static JSONArray getTrainsArrivingAt (String stationCode, String arrivalTime) throws JSONException {

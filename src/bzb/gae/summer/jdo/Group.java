@@ -117,14 +117,20 @@ public class Group {
 	}
 	
 	public String toString (String username) {
-		String message = "Your group contains: ";
+		String message = "Your group: ";
 		List<User> users = getUsers(username);
 		Iterator<User> i = users.iterator();
 		while (i.hasNext()) {
 			User user = i.next();
-			message += user.getUsername() + " " + user.getPhoneNumber() + ", ";
+			if (Utility.isValidPhone(user.getContact())) {
+				message += user.getUsername() + " " + user.getContact() + ", ";
+			} else if (Utility.isValidTwitter(user.getContact())) {
+				message += user.getContact() + ", ";
+			} else {
+				message += user.getUsername() + ", ";
+			}
 		}
-		if (users.size() > 1) {
+		if (users.size() > 0) {
 			message = message.substring(0, message.length() - 2);
 		}
 		return message;
@@ -135,19 +141,19 @@ public class Group {
 		if (users.size() == 1) {
 			User user = users.get(0);
 			String message = "Unfortunately there were no other travellers in your group";
-			if (Utility.isValidPhone(user.getPhoneNumber())) {
-				Utility.sendSMS(user.getPhoneNumber(), message);
-			} else if (Utility.isValidTwitter(user.getPhoneNumber())) {
-				Twitter.sendDirectMessage(user.getPhoneNumber(), message);
+			if (Utility.isValidPhone(user.getContact())) {
+				Utility.sendSMS(user.getContact(), message);
+			} else if (Utility.isValidTwitter(user.getContact())) {
+				Twitter.sendDirectMessage(user.getContact(), message);
 			}
 		} else if (users.size() > 1) {
 			Iterator<User> i = users.iterator();
 			while (i.hasNext()) {
 				User user = i.next();
-				if (Utility.isValidPhone(user.getPhoneNumber())) {
-					Utility.sendSMS(user.getPhoneNumber(), toString(user.getUsername()));
-				} else if (Utility.isValidTwitter(user.getPhoneNumber())) {
-					Twitter.sendDirectMessage(user.getPhoneNumber(), toString(user.getUsername()));
+				if (Utility.isValidPhone(user.getContact())) {
+					Utility.sendSMS(user.getContact(), toString(user.getUsername()));
+				} else if (Utility.isValidTwitter(user.getContact())) {
+					Twitter.sendDirectMessage(user.getContact(), toString(user.getUsername()));
 				}
 			}
 		}

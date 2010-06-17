@@ -64,7 +64,7 @@ public class StateServlet extends HttpServlet {
 							JSONObject userJson;
 							try {
 								userJson = new JSONObject().put("username", thisUser.getUsername());
-								userJson.put("phoneNumber", thisUser.getPhoneNumber());
+								userJson.put("phoneNumber", thisUser.getContact());
 								usersJson.put(userJson);
 							} catch (JSONException e) {
 								e.printStackTrace();
