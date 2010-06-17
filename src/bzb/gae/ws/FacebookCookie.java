@@ -3,26 +3,22 @@
  */
 package bzb.gae.ws;
 
+import java.util.logging.Logger;
+
 import javax.servlet.http.Cookie;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import bzb.gae.Utility;
+import bzb.gae.summer.MobileServlet;
 
 /**
  * @author bzb
  *
  */
 public class FacebookCookie {
-	
+		
 	private Cookie cookie;
 	private String token;
-	private String secret;
-	private String session;
-	private String sig;
-	private String uid;
-	private String[] name;
+	private String firstName;
+	private String lastName;
 	private String profileURL;
 	
 	public FacebookCookie (Cookie cookie) {
@@ -33,22 +29,13 @@ public class FacebookCookie {
 			String[] pair = bits[i].split("=");
 			if (pair[0].equals("access_token")) {
 				setToken(pair[1]);
-			} else if (pair[0].equals("access_token")) {
-				setSecret(pair[1]);
-			} else if (pair[0].equals("session_key")) {
-				setSession(pair[1]);
-			} else if (pair[0].equals("sig")) {
-				setSig(pair[1]);
-			} else if (pair[0].equals("uid")) {
-				setUid(pair[1]);
+			} else if (pair[0].equals("first_name")) {
+				setFirstName(pair[1]);
+			} else if (pair[0].equals("last_name")) {
+				setLastName(pair[1]);
+			} else if (pair[0].equals("profile_url")) {
+				setProfileURL("http://www.facebook.com/profile.php?id=" + pair[1]);
 			}
-		}
-		try {
-			JSONObject userJson = new JSONObject(Utility.makeGetRequest("https://graph.facebook.com/me?access_token=" + getToken()));
-			setName(new String[]{userJson.getString("first_name"), userJson.getString("last_name")});
-			setProfileURL(userJson.getString("link"));
-		} catch (JSONException e) {
-			e.printStackTrace();
 		}
 	}
 	public void setCookie(Cookie cookie) {
@@ -63,41 +50,35 @@ public class FacebookCookie {
 	public String getToken() {
 		return token;
 	}
-	public void setSecret(String secret) {
-		this.secret = secret;
-	}
-	public String getSecret() {
-		return secret;
-	}
-	public void setSession(String session) {
-		this.session = session;
-	}
-	public String getSession() {
-		return session;
-	}
-	public void setSig(String sig) {
-		this.sig = sig;
-	}
-	public String getSig() {
-		return sig;
-	}
-	public void setUid(String uid) {
-		this.uid = uid;
-	}
-	public String getUid() {
-		return uid;
-	}
-	public void setName(String[] name) {
-		this.name = name;
-	}
-	public String[] getName() {
-		return name;
-	}
 	public void setProfileURL(String profileURL) {
 		this.profileURL = profileURL;
 	}
 	public String getProfileURL() {
 		return profileURL;
+	}
+	/**
+	 * @param firstName the firstName to set
+	 */
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	/**
+	 * @return the firstName
+	 */
+	public String getFirstName() {
+		return firstName;
+	}
+	/**
+	 * @param lastName the lastName to set
+	 */
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	/**
+	 * @return the lastName
+	 */
+	public String getLastName() {
+		return lastName;
 	}
 
 }

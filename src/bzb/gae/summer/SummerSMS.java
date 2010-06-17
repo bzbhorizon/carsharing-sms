@@ -171,7 +171,7 @@ public class SummerSMS {
 					Iterator<Group> it = groups.iterator();
 					while (it.hasNext()) {
 						Group thisGroup = it.next();
-						if (thisGroup.getArrivalTime().equals(getArrivalTime()) && thisGroup.moreRoom()) {
+						if (thisGroup.isInGroupsTimeWindow(getArrivalTime()) && thisGroup.moreRoom()) {
 					    	log.warning("Assigning user to different existing group");
 					    	user.setGroupKey(thisGroup.getKey());
 					    	setGroupKey(thisGroup.getKey());
@@ -196,7 +196,7 @@ public class SummerSMS {
 			    Iterator<Group> it = groups.iterator();
 			    while (it.hasNext()) {
 					Group thisGroup = it.next();
-					if (thisGroup.getArrivalTime().equals(getArrivalTime()) && thisGroup.moreRoom()) {
+					if (thisGroup.isInGroupsTimeWindow(getArrivalTime()) && thisGroup.moreRoom()) {
 						log.warning("Assigning user to existing group");
 						setGroupKey(thisGroup.getKey());
 						break;

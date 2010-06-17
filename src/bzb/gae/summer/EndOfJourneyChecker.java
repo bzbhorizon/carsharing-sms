@@ -25,7 +25,7 @@ import bzb.gae.summer.jdo.Group;
 @SuppressWarnings("serial")
 public class EndOfJourneyChecker extends HttpServlet {
 
-	private static final int MINUTES_BEFORE_ARRIVAL = 10;
+	public static final int MINUTES_BEFORE_ARRIVAL = 10;
 	
 	private static final Logger log = Logger
 			.getLogger(EndOfJourneyChecker.class.getName());

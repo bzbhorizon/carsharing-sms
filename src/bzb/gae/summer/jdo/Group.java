@@ -28,6 +28,7 @@ import com.google.appengine.api.datastore.Key;
 public class Group {
 
 	private static final int TOTAL_CAPACITY = 4;
+	private static final int TIME_WINDOW = 3;
 	
 	@PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -152,4 +153,18 @@ public class Group {
 		}
 	}
 	
+	public boolean isInGroupsTimeWindow (String userArrivalTime) {
+		boolean isIn = false;
+		
+		int userHours = Integer.parseInt(userArrivalTime.substring(0, userArrivalTime.length() - 2));
+		int userMinutes = userHours * 60 + Integer.parseInt(userArrivalTime.substring(userArrivalTime.length() - 2));
+
+		int groupHours = Integer.parseInt(getArrivalTime().substring(0, getArrivalTime().length() - 2));
+		int groupMinutes = groupHours * 60 + Integer.parseInt(getArrivalTime().substring(getArrivalTime().length() - 2));
+				
+		if (userMinutes <= (groupMinutes + TIME_WINDOW) && userMinutes >= (groupMinutes - TIME_WINDOW)) {
+			isIn = true;
+		}
+		return isIn;
+	}
 }
