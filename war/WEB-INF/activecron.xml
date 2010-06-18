@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cronentries>
+  <cron>
+    <url>/cron/summer/checkGroups</url>
+    <description>Regularly check for and inform unfinished groups that are nearing their arrival time</description>
+    <schedule>every 10 minutes synchronized</schedule>
+  </cron>
+  <cron>
+    <url>/cron/summer/checkTweets</url>
+    <description>Regularly check for registration tweets</description>
+    <schedule>every 5 minutes synchronized</schedule>
+  </cron>
+</cronentries>

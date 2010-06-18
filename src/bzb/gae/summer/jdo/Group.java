@@ -140,7 +140,7 @@ public class Group {
 		List<User> users = getUsers(null);
 		if (users.size() == 1) {
 			User user = users.get(0);
-			String message = "Unfortunately there were no other travellers in your group";
+			String message = "Unfortunately there was no-one else in your group. Travel on by yourself.";
 			if (Utility.isValidPhone(user.getContact())) {
 				Utility.sendSMS(user.getContact(), message);
 			} else if (Utility.isValidTwitter(user.getContact())) {
@@ -151,9 +151,9 @@ public class Group {
 			while (i.hasNext()) {
 				User user = i.next();
 				if (Utility.isValidPhone(user.getContact())) {
-					Utility.sendSMS(user.getContact(), toString(user.getUsername()));
+					Utility.sendSMS(user.getContact(), toString(user.getUsername()) + ". Meet at WHSmith");
 				} else if (Utility.isValidTwitter(user.getContact())) {
-					Twitter.sendDirectMessage(user.getContact(), toString(user.getUsername()));
+					Twitter.sendDirectMessage(user.getContact(), toString(user.getUsername()) + ". Meet at WHSmith");
 				}
 			}
 		}
@@ -161,13 +161,13 @@ public class Group {
 	
 	public boolean isInGroupsTimeWindow (String userArrivalTime) {
 		boolean isIn = false;
-		
+
 		int userHours = Integer.parseInt(userArrivalTime.substring(0, userArrivalTime.length() - 2));
 		int userMinutes = userHours * 60 + Integer.parseInt(userArrivalTime.substring(userArrivalTime.length() - 2));
 
 		int groupHours = Integer.parseInt(getArrivalTime().substring(0, getArrivalTime().length() - 2));
 		int groupMinutes = groupHours * 60 + Integer.parseInt(getArrivalTime().substring(getArrivalTime().length() - 2));
-				
+
 		if (userMinutes <= (groupMinutes + TIME_WINDOW) && userMinutes >= (groupMinutes - TIME_WINDOW)) {
 			isIn = true;
 		}

@@ -54,7 +54,7 @@ public class MobileServlet extends HttpServlet {
 					}
 				}
 			}
-			String html = "<body>";
+			String html = "<body><h1>DTC Summer School</h1><div class=\"bodybox\">";
 			
 			if (userCookie != null) {
 				html += "<p>Hi " + userCookie.getFirstName() + ". ";
@@ -95,6 +95,7 @@ public class MobileServlet extends HttpServlet {
 				} else {
 					html = Utility.headWithTitle("DTC Summer School App") + html + "Click <a href=\"?action=register\">here</a> to join a travelling group.</p>";
 				}
+				
 			} else {
 				response.sendRedirect("https://graph.facebook.com/oauth/authorize?" +
 					    "client_id=" + CLIENT_ID + "&" +
@@ -102,7 +103,7 @@ public class MobileServlet extends HttpServlet {
 					    "display=touch");
 			}
 
-			html +=	"</body>";
+			html +=	"</div></body>";
 			
 			response.getWriter().println(html);
 		} else if (request.getParameter("action") != null && request.getParameter("action").equals("register")) {
@@ -119,7 +120,7 @@ public class MobileServlet extends HttpServlet {
 				}
 			}
 			
-			html += "<body>";
+			html += "<body><h1>Registration</h1><div class=\"bodybox\">";
 			
 			if (userCookie != null) {
 				html += "<p>Register</p>" +
@@ -133,7 +134,7 @@ public class MobileServlet extends HttpServlet {
 						"</form>";
 			}
 			
-			html +=	"</body>";
+			html +=	"</div></body>";
 			
 			response.getWriter().println(html);
 		} else if (request.getParameter("action") != null && request.getParameter("action").equals("register2")) {
@@ -150,7 +151,7 @@ public class MobileServlet extends HttpServlet {
 				}
 			}
 			
-			html += "<body>";
+			html += "<body><h1>Success!</h1><div class=\"bodybox\">";
 			
 			if (userCookie != null) {
 				if (request.getParameter("user") != null && request.getParameter("arrival") != null) {
@@ -172,7 +173,7 @@ public class MobileServlet extends HttpServlet {
 				}				
 			}
 			
-			html +=	"</body>";
+			html +=	"</div></body>";
 			
 			response.getWriter().println(html);
 			

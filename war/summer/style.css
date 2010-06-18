@@ -1,0 +1,33 @@
+body {
+	background-color: black;
+	background-image: url("../stripe.png");
+	color: white;
+	font-size: 10pt;
+	font-family: Arial, Helvetica;
+}
+
+a:link,a:visited {
+	color: white;
+}
+
+h1 {
+	color: #00c0ff;
+	font-size: 20pt;
+	border-bottom: 1px solid #00c0ff;
+}
+
+h2 {
+	font-size: 12pt;
+	border-bottom: 1px dotted white;
+}
+
+h3 {
+	font-size: 12pt;
+}
+
+p.bodybox,div.bodybox {
+	color: white;
+	border: 1px dotted white;
+	padding: 5px 20px 5px 20px;
+	background-color: #171717;
+}

@@ -3,11 +3,7 @@
  */
 package bzb.gae.ws;
 
-import java.util.logging.Logger;
-
 import javax.servlet.http.Cookie;
-
-import bzb.gae.summer.MobileServlet;
 
 /**
  * @author bzb
