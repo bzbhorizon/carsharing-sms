@@ -145,6 +145,8 @@ public class Group {
 			String message = "Unfortunately there was no-one else in your group. Travel on by yourself.";
 			if (Utility.isValidPhone(user.getContact())) {
 				Utility.sendSMS(user.getContact(), message);
+			} else if (user.getOptionalContact() != null && Utility.isValidPhone(user.getOptionalContact())) {
+				Utility.sendSMS(user.getOptionalContact(), message);
 			} else if (Utility.isValidTwitter(user.getContact())) {
 				Twitter.sendDirectMessage(user.getContact(), message);
 			}
@@ -152,10 +154,13 @@ public class Group {
 			Iterator<User> i = users.iterator();
 			while (i.hasNext()) {
 				User user = i.next();
+				String message = toString(user.getUsername()) + ". Meet at WHSmith";
 				if (Utility.isValidPhone(user.getContact())) {
-					Utility.sendSMS(user.getContact(), toString(user.getUsername()) + ". Meet at WHSmith");
+					Utility.sendSMS(user.getContact(), message);
+				} else if (user.getOptionalContact() != null && Utility.isValidPhone(user.getOptionalContact())) {
+					Utility.sendSMS(user.getOptionalContact(), message);
 				} else if (Utility.isValidTwitter(user.getContact())) {
-					Twitter.sendDirectMessage(user.getContact(), toString(user.getUsername()) + ". Meet at WHSmith");
+					Twitter.sendDirectMessage(user.getContact(), message);
 				}
 			}
 		}

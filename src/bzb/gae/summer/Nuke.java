@@ -33,17 +33,19 @@ public class Nuke extends HttpServlet {
 		log.warning("Deleting all data");
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
-			Query q = pm.newQuery("select from " + App.class.getName());
-			List<App> apps = (List<App>) q.execute();
-			pm.deletePersistentAll(apps);
-			
-			q = pm.newQuery("select from " + Group.class.getName());
+			Query q = pm.newQuery("select from " + Group.class.getName());
 			List<Group> groups = (List<Group>) q.execute();
 			pm.deletePersistentAll(groups);
 			
 			q = pm.newQuery("select from " + User.class.getName());
 			List<User> users = (List<User>) q.execute();
 			pm.deletePersistentAll(users);
+			
+			if (request.getParameter("tweets") != null && request.getParameter("tweets").equals("true")) {
+				q = pm.newQuery("select from " + App.class.getName());
+				List<App> apps = (List<App>) q.execute();
+				pm.deletePersistentAll(apps);
+			}
 		} finally {
 			pm.close();
 		}
