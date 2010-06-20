@@ -111,8 +111,11 @@ public class SummerSMS {
 		setUsername(username);
 		String arrivalTime = parseArrivalTime(smsChunks[2].trim());
 		setArrivalTime(arrivalTime);
-		String optionalContact = smsChunks[3].trim();
-		setOptionalContact(optionalContact);
+		String optionalContact = null;
+		if (smsChunks.length > 3 && smsChunks[3] != null) {
+			optionalContact = smsChunks[3].trim();
+			setOptionalContact(optionalContact);
+		}
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
 			try {

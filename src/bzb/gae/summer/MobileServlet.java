@@ -62,6 +62,8 @@ public class MobileServlet extends HttpServlet {
 				if ((user = User.getUser(userCookie.getProfileURL())) != null) {
 					Group thisGroup = Group.getGroup(user.getGroupKey());
 					
+					html += "Your train is scheduled to arrive at " + thisGroup.getArrivalTime() + ". ";
+					
 					if (Utility.getMinutesUntil(thisGroup.getArrivalTime()) < EndOfJourneyChecker.MINUTES_BEFORE_ARRIVAL) {
 						html = Utility.headWithTitle("DTC Summer School App") + html + "Your group is about to arrive, so no more travellers will join it.</p><p>";
 					} else {
@@ -79,7 +81,7 @@ public class MobileServlet extends HttpServlet {
 							if (Utility.isValidPhone(thisUser.getContact())) {
 								html += "Tel: " + thisUser.getContact();
 							} else if (Utility.isValidTwitter(thisUser.getContact())) {
-								html += "Twitter: <a href=\"http://www.twitter.com/" + thisUser.getContact().substring(1) + "\" target=\"_blank\">" + thisUser.getContact() + "</a> (" + thisUser.getUsername() + ")";
+								html += "Twitter: <a href=\"http://www.twitter.com/" + thisUser.getContact().substring(1) + "\" target=\"_blank\">" + thisUser.getContact() + "</a>";
 							} else if (Utility.isValidFacebookURL(thisUser.getContact())){
 								html += "Facebook: <a href=\"" + thisUser.getContact() + "\" target=\"_blank\">" + thisUser.getContact() + "</a>";
 							}
@@ -161,11 +163,11 @@ public class MobileServlet extends HttpServlet {
 			if (userCookie != null) {
 				if (request.getParameter("user") != null && request.getParameter("arrival") != null) {
 					try {
-						String mobile = null;
-						if (request.getParameter("mobile").length() > 0) {
-							mobile = request.getParameter("mobile");
+						String phone = null;
+						if (request.getParameter("phone").length() > 0) {
+							phone = request.getParameter("phone");
 						}
-						new SummerSMS(userCookie.getProfileURL(), new String[]{"summer", request.getParameter("user"), request.getParameter("arrival"), mobile});
+						new SummerSMS(userCookie.getProfileURL(), new String[]{"summer", request.getParameter("user"), request.getParameter("arrival"), phone});
 						html += "<p>Thanks " + userCookie.getFirstName() + ". Now click <a href=\"http://carsharing-sms.appspot.com/summer/mobile\">here</a> to watch for other travellers joining your group.</p>";
 					} catch (UserAlreadyExistsException e) {
 						html += "<p>Thanks " + userCookie.getFirstName() + ". Your details have been updated. Now click <a href=\"http://carsharing-sms.appspot.com/summer/mobile\">here</a> to watch for other travellers joining your group.</p>";

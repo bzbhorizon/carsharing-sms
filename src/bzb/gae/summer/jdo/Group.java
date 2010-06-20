@@ -17,7 +17,6 @@ import javax.jdo.annotations.PrimaryKey;
 
 import bzb.gae.PMF;
 import bzb.gae.Utility;
-import bzb.gae.summer.SummerSMS;
 import bzb.gae.ws.Twitter;
 
 import com.google.appengine.api.datastore.Key;
