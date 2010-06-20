@@ -6,6 +6,7 @@ package bzb.gae.summer.jdo;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
@@ -16,6 +17,7 @@ import javax.jdo.annotations.PrimaryKey;
 
 import bzb.gae.PMF;
 import bzb.gae.Utility;
+import bzb.gae.summer.SummerSMS;
 import bzb.gae.ws.Twitter;
 
 import com.google.appengine.api.datastore.Key;
@@ -29,6 +31,8 @@ public class Group {
 
 	private static final int TOTAL_CAPACITY = 4;
 	private static final int TIME_WINDOW = 3;
+	
+	private static final Logger log = Logger.getLogger(Group.class.getName());
 	
 	@PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -148,19 +152,19 @@ public class Group {
 			} else if (user.getOptionalContact() != null && Utility.isValidPhone(user.getOptionalContact())) {
 				Utility.sendSMS(user.getOptionalContact(), message);
 			} else if (Utility.isValidTwitter(user.getContact())) {
-				Twitter.sendDirectMessage(user.getContact(), message);
+				log.warning("Twitter message " + Twitter.sendDirectMessage(user.getContact(), message));
 			}
 		} else if (users.size() > 1) {
 			Iterator<User> i = users.iterator();
 			while (i.hasNext()) {
 				User user = i.next();
-				String message = toString(user.getUsername()) + ". Meet at WHSmith";
+				String message = toString(user.getUsername()) + ". Meet at the station WHSmith";
 				if (Utility.isValidPhone(user.getContact())) {
 					Utility.sendSMS(user.getContact(), message);
 				} else if (user.getOptionalContact() != null && Utility.isValidPhone(user.getOptionalContact())) {
 					Utility.sendSMS(user.getOptionalContact(), message);
 				} else if (Utility.isValidTwitter(user.getContact())) {
-					Twitter.sendDirectMessage(user.getContact(), message);
+					log.warning("Twitter message " + Twitter.sendDirectMessage(user.getContact(), message));
 				}
 			}
 		}

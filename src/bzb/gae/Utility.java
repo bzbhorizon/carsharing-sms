@@ -98,12 +98,18 @@ public abstract class Utility {
 
 	public static String sendSMS(String recipient, String body) {
 		if (Utility.isValidPhone(recipient)) {
-			log.warning("Sending SMS to " + recipient + " saying \"" + body + "\"");
+			String response;
 			if (body.length() > 160) {
-				log.warning("Body longer than 160 chars: " + body);
-			}
-			return postToEsendex("&Originator=Horizon&Recipient=" + recipient + "&Body=" + body
+				log.warning("Body longer than 160 chars: " + body.length());
+				response = postToEsendex("&Originator=Horizon&Recipient=" + recipient + "&Body=" + body.substring(0, 150) + " (cont'd)"
+						+ "&PlainText=1");
+				response += postToEsendex("&Originator=Horizon&Recipient=" + recipient + "&Body=..." + body.substring(150)
+						+ "&PlainText=1");
+			} else {
+				response = postToEsendex("&Originator=Horizon&Recipient=" + recipient + "&Body=" + body
 					+ "&PlainText=1");
+			}
+			return response;
 		} else {
 			return null;
 		}
