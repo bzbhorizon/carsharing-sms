@@ -124,10 +124,12 @@ public class Group {
 			User user = i.next();
 			if (Utility.isValidPhone(user.getContact())) {
 				message += user.getUsername() + " " + user.getContact() + ", ";
-			} else if (Utility.isValidTwitter(user.getContact())) {
+			} else if (user.getOptionalContact() != null && Utility.isValidPhone(user.getOptionalContact())) {
+				message += user.getUsername() + " " + user.getOptionalContact() + ", ";
+			} else if (Utility.isValidTwitter(user.getContact())) {			
 				message += user.getContact() + ", ";
 			} else {
-				message += user.getUsername() + ", ";
+				message += user.getUsername() + " (fb), ";
 			}
 		}
 		if (users.size() > 0) {

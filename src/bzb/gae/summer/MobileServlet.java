@@ -79,9 +79,12 @@ public class MobileServlet extends HttpServlet {
 							if (Utility.isValidPhone(thisUser.getContact())) {
 								html += "Tel: " + thisUser.getContact();
 							} else if (Utility.isValidTwitter(thisUser.getContact())) {
-								html += "Twitter: <a href=\"http://www.twitter.com/" + thisUser.getContact().substring(1) + "\" target=\"_blank\">" + thisUser.getContact() + "</a>";
+								html += "Twitter: <a href=\"http://www.twitter.com/" + thisUser.getContact().substring(1) + "\" target=\"_blank\">" + thisUser.getContact() + "</a> (" + thisUser.getUsername() + ")";
 							} else if (Utility.isValidFacebookURL(thisUser.getContact())){
 								html += "Facebook: <a href=\"" + thisUser.getContact() + "\" target=\"_blank\">" + thisUser.getContact() + "</a>";
+							}
+							if (thisUser.getOptionalContact() != null && Utility.isValidPhone(thisUser.getOptionalContact())) {
+								html += "; tel: " + thisUser.getOptionalContact();
 							}
 							html += ")</li>";
 						}
@@ -123,13 +126,15 @@ public class MobileServlet extends HttpServlet {
 			html += "<body><h1>Registration</h1><div class=\"bodybox\">";
 			
 			if (userCookie != null) {
-				html += "<p>Register</p>" +
-						"<form name=\"input\" action=\"http://carsharing-sms.appspot.com/summer/mobile\" method=\"get\">" +
+				html += "<form name=\"input\" action=\"http://carsharing-sms.appspot.com/summer/mobile\" method=\"get\">" +
 						"<input type=\"hidden\" name=\"action\" value=\"register2\" /><br />" +
 						"Username:" +
 						"<input type=\"text\" name=\"user\" size=\"20\" value=\"" + userCookie.getFirstName() + " " + userCookie.getLastName() + "\" /><br />" +
 						"Scheduled arrival time:" +
-						"<input type=\"text\" name=\"arrival\" size=\"4\" value=\"" + new SimpleDateFormat("kkmm").format(new Date(System.currentTimeMillis() + 1000*60*60)) + "\" /><br />" +
+						"<input type=\"text\" name=\"arrival\" size=\"4\" value=\"" + new SimpleDateFormat("kkmm").format(new Date(System.currentTimeMillis() + 1000*60*60)) + "\" />" +
+						"<p>Once you have registered you can see who has joined your travelling group by checking this web-site; if you want to receive important notifications during your journey by SMS to ensure that you don't miss out, enter your mobile number below.</p>" +
+						"Mobile phone number:" +
+						"<input type=\"text\" name=\"phone\" size=\"14\" /> (optional)<br />" +
 						"<input type=\"submit\" value=\"Submit\" />" +
 						"</form>";
 			}
@@ -151,17 +156,22 @@ public class MobileServlet extends HttpServlet {
 				}
 			}
 			
-			html += "<body><h1>Success!</h1><div class=\"bodybox\">";
+			html += "<body><h1>Registration</h1><div class=\"bodybox\">";
 			
 			if (userCookie != null) {
 				if (request.getParameter("user") != null && request.getParameter("arrival") != null) {
 					try {
-						new SummerSMS(userCookie.getProfileURL(), new String[]{"summer", request.getParameter("user"), request.getParameter("arrival")});
+						String mobile = null;
+						if (request.getParameter("mobile").length() > 0) {
+							mobile = request.getParameter("mobile");
+						}
+						new SummerSMS(userCookie.getProfileURL(), new String[]{"summer", request.getParameter("user"), request.getParameter("arrival"), mobile});
 						html += "<p>Thanks " + userCookie.getFirstName() + ". Now click <a href=\"http://carsharing-sms.appspot.com/summer/mobile\">here</a> to watch for other travellers joining your group.</p>";
 					} catch (UserAlreadyExistsException e) {
 						html += "<p>Thanks " + userCookie.getFirstName() + ". Your details have been updated. Now click <a href=\"http://carsharing-sms.appspot.com/summer/mobile\">here</a> to watch for other travellers joining your group.</p>";
 						e.printStackTrace();
 					} catch (BadArrivalTimeException e) {
+						html += "<p>Thanks " + userCookie.getFirstName() + ", but we couldn't understand that arrival time. Click <a href=\"http://carsharing-sms.appspot.com/summer/mobile?action=register\">here</a> to try again.</p>";
 						e.printStackTrace();
 					} catch (TooManyArgumentsException e) {
 						e.printStackTrace();

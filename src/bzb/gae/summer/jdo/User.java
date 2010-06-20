@@ -31,16 +31,20 @@ public class User {
 	private String contact;
 	
 	@Persistent
+	private String optionalContact;
+	
+	@Persistent
 	private String arrivalTime;
 	
 	@Persistent
 	private Key groupKey;
 	
-	public User (String username, String phoneNumber, String arrivalTime, Key groupKey) {
+	public User (String username, String phoneNumber, String arrivalTime, Key groupKey, String optionalContact) {
 		setUsername(username);
 		setContact(phoneNumber);
 		setArrivalTime(arrivalTime);
 		setGroupKey(groupKey);
+		setOptionalContact(optionalContact);
 	}
 	
 	public static User getUser (String phoneNumber) {
@@ -91,6 +95,14 @@ public class User {
 
 	public Key getGroupKey() {
 		return groupKey;
+	}
+
+	public void setOptionalContact(String optionalContact) {
+		this.optionalContact = optionalContact;
+	}
+
+	public String getOptionalContact() {
+		return optionalContact;
 	}
 	
 }

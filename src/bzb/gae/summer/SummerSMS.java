@@ -32,9 +32,11 @@ import com.google.appengine.api.datastore.Key;
 public class SummerSMS {
 
 	private static final Logger log = Logger.getLogger(SummerSMS.class.getName());
-	private final static int EXPECTED_PARAMETERS = 3;
+	private final static int MAX_PARAMETERS = 4;
+	private final static int MIN_PARAMETERS = 3;
 
 	private String originator;
+	private String optionalContact;
 	private String username;
 	private String arrivalTime;
 	private Key groupKey;
@@ -42,9 +44,9 @@ public class SummerSMS {
 	public SummerSMS(String originator, String[] smsChunks)
 			throws UserAlreadyExistsException, BadArrivalTimeException,
 			TooManyArgumentsException, TooFewArgumentsException, UserNotFoundException {
-		if (smsChunks.length > EXPECTED_PARAMETERS) {
+		if (smsChunks.length > MAX_PARAMETERS) {
 			throw new TooManyArgumentsException();
-		} else if (smsChunks.length < EXPECTED_PARAMETERS) {
+		} else if (smsChunks.length < MIN_PARAMETERS) {
 			PersistenceManager pm = PMF.get().getPersistenceManager();
 			try {
 				String username = smsChunks[1].trim();
@@ -58,13 +60,12 @@ public class SummerSMS {
 			}
 			throw new TooFewArgumentsException();
 		} else {
-			setOriginator(originator);
-			checkDetails(smsChunks);
+			checkDetails(originator, smsChunks);
 			checkGroup();
 			if (getUsername() != null) {
 				PersistenceManager pm = PMF.get().getPersistenceManager();
 				User user = new User(getUsername(), getOriginator(),
-						getArrivalTime(), getGroupKey());
+						getArrivalTime(), getGroupKey(), getOptionalContact());
 				try {
 					pm.makePersistent(user);
 				} finally {
@@ -104,20 +105,23 @@ public class SummerSMS {
 		return username;
 	}
 
-	public void checkDetails(String[] smsChunks) throws BadArrivalTimeException {
+	public void checkDetails(String originator, String[] smsChunks) throws BadArrivalTimeException {
+		setOriginator(originator);
 		String username = smsChunks[1].trim();
+		setUsername(username);
 		String arrivalTime = parseArrivalTime(smsChunks[2].trim());
+		setArrivalTime(arrivalTime);
+		String optionalContact = smsChunks[3].trim();
+		setOptionalContact(optionalContact);
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
 			try {
 				User user = pm.getObjectById(User.class, username);
-				setUsername(username);
 				user.setArrivalTime(arrivalTime);
-				setArrivalTime(arrivalTime);
 				user.setContact(getOriginator());
+				user.setOptionalContact(optionalContact);
 			} catch (JDOObjectNotFoundException je) {
-				setArrivalTime(arrivalTime);
-				setUsername(username);
+
 			}
 		} finally {
 			pm.close();
@@ -212,6 +216,14 @@ public class SummerSMS {
 		} finally {
 			pm.close();
 		}
+	}
+
+	public void setOptionalContact(String optionalContact) {
+		this.optionalContact = optionalContact;
+	}
+
+	public String getOptionalContact() {
+		return optionalContact;
 	}
 
 }
